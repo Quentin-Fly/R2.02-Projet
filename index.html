@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html lang="fr">
+    <head>
+        <title>Kampus - Le Réseau Social pour Etudiants</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+        <meta charset="utf-8"/>
+        <!-- Polices -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+        <!-- Icônes -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        <!-- Page d'accueil -->
+        <section id="page_acceuil"> 
+            <div class = "gauche">
+                <h1>Kampus</h1>
+                <div class="ligne_foncee"></div>
+                <p>Le réseau social pour tous les étudiants. Echanger, s’entraider et partager sa vie universitaire.</p>
+            </div>
+            <div class = "droite">
+                <div id="formulaire_acceuil">
+                    <!-- Bouton switch (connexion/inscription)  => Connexion par défaut-->
+                    <div class = "switch">
+                        <button id="switch_connexion" class="active">Connexion</button>
+                        <button id="switch_inscription">Inscription</button>
+                    </div>
+                    <!-- Formulaire d'inscription -->
+                    <form id="formulaire_inscription">
+                        <div class="ligne_claire"></div>
+                        <label for = "nom">Nom :</label>
+                        <br>
+                        <input type = "text" id="nom" name="nom" class="champs" placeholder="Dupont">
+                        <br>
+                        <label for = "prenom">Prénom :</label>
+                        <br>
+                        <input type = "text" id="prenom" name="prenom" class="champs" placeholder="Pierre">
+                        <br>
+                        <label for = "email">Email :</label>
+                        <br>
+                        <input type = "email" id="email" name="email" class="champs" placeholder="pierre.dupont@example.com">
+                        <br>
+                        <label for = "mdp_inscription">Mot de passe :</label>
+                        <br>
+                        <input type ="password" id="mdp_inscription" name="mdp_inscription" class="champs" placeholder="Entrez votre mot de passe">
+                        <br>
+                        <label for = "confirmation_mdp">Confirmer le mot de passe :</label>
+                        <br>
+                        <input type ="password" id="confirmation_mdp" name="confirmation_mdp" class="champs" placeholder="Confirmez votre mot de passe">
+                        <br>
+                        <label for = "image">Photo de profil :</label>
+                        <br>
+                        <input type ="file" id="image" name="image" class="champs">
+                        <br>
+                        <input type="checkbox" id="conditions" name = "conditions">
+                        <label for = "conditions">J'accepte les conditions d'utilisation et le règlement.</label>
+                        <br>
+                        <button type="submit" id="btn_inscription">S'inscrire</button>
+                    </form>
+                    <form id="formulaire_connexion" class="active">
+                        <label for = "email_connexion">Email :</label>
+                        <br>
+                        <input type = "email" id="email_connexion" name="email_connexion" class="champs">
+                        <br>
+                        <label for = "mdp_connexion">Mot de passe :</label>
+                        <br>
+                        <input type ="password" id="mdp_connexion" name="mdp_connexion" class="champs">
+                        <br>
+                        <button type="submit" id="btn_connexion">Se connecter</button>
+                    </form>
+                </div>
+            </div>
+        </section>

@@ -1,0 +1,132 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+html, body 
+{
+    height: 100%;
+}
+
+#page_acceuil 
+{
+    display: flex;
+    height: 100vh;
+}
+
+.gauche, .droite 
+{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.gauche 
+{
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f8f9fa;
+    text-align: center;
+    padding: 50px;
+}
+
+.droite 
+{
+    background: #f9fafb;
+    padding: 50px;
+}
+/* Styles pour les lignes décoratives */
+.ligne_claire
+{
+    width: 80px;
+    height: 4px;   
+    margin: 0 auto;
+    border-radius: 2px;
+    background: #3b82f6
+}
+.ligne_foncee
+{
+    width: 80px;
+    height: 4px;   
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    background: #1e40af;
+}
+/* Formulaire */
+
+form
+{
+    display: none;
+    width: 400px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+form.active
+{
+    display: flex;
+}
+form h1
+{
+    margin-bottom: 30px;
+    color: #1e293b;
+    text-align: center;
+}
+label
+{
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.champs
+{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+/* Boutons */
+button
+{
+    background-color: #3b82f6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top : 20px;
+    width: 100%;
+}
+/* Bouton Switch */
+/* boutons switch */
+.switch {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.switch button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: #e5e7eb;
+}
+
+.switch button.active {
+    background: #4f46e5;
+    color: white;
+}
