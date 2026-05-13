@@ -21,52 +21,62 @@
                 <p>Le réseau social pour tous les étudiants. Echanger, s’entraider et partager sa vie universitaire.</p>
             </div>
             <div class = "droite">
-                <div id="formulaire_acceuil">
+                <div class="formulaire_conteneur">
                     <!-- Bouton switch (connexion/inscription)  => Connexion par défaut-->
                     <div class = "switch">
+                        <!-- Slider pour l'effet visuel du switch -->
+                        <div class="slider"></div>
+
                         <button id="switch_connexion" class="active">Connexion</button>
                         <button id="switch_inscription">Inscription</button>
                     </div>
+                    <div class="ligne_claire"></div>
                     <!-- Formulaire d'inscription -->
                     <form id="formulaire_inscription">
-                        <div class="ligne_claire"></div>
-                        <label for = "nom">Nom :</label>
-                        <br>
-                        <input type = "text" id="nom" name="nom" class="champs" placeholder="Dupont">
-                        <br>
-                        <label for = "prenom">Prénom :</label>
-                        <br>
-                        <input type = "text" id="prenom" name="prenom" class="champs" placeholder="Pierre">
-                        <br>
+                        <label> Photo de profil :</label>
+                        <div class="photo_profil_conteneur">
+                            <div class="photo_profil_prevu">
+                                <img src="data/utilisateur.png" id="photo_profil_apercu" alt="Photo de profil">
+                            
+                                <label for="image" class="overlay_edition">
+                                    <i class="fa-solid fa-pen"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <input type="file" id="image" accept="image/*" style="display: none;">
+                        <div id="nom_prenom_conteneur">
+                            <div class="groupe_champs">
+                                <label for = "nom">Nom :</label>
+                                <input type = "text" id="nom" name="nom" class="champs" placeholder="Dupont">
+                            </div>
+                            <div class="groupe_champs">
+                                <label for = "prenom">Prénom :</label>
+                                <input type = "text" id="prenom" name="prenom" class="champs" placeholder="Pierre">
+                            </div>
+                        </div>
+
                         <label for = "email">Email :</label>
-                        <br>
                         <input type = "email" id="email" name="email" class="champs" placeholder="pierre.dupont@example.com">
-                        <br>
+
                         <label for = "mdp_inscription">Mot de passe :</label>
-                        <br>
                         <input type ="password" id="mdp_inscription" name="mdp_inscription" class="champs" placeholder="Entrez votre mot de passe">
-                        <br>
+
                         <label for = "confirmation_mdp">Confirmer le mot de passe :</label>
-                        <br>
                         <input type ="password" id="confirmation_mdp" name="confirmation_mdp" class="champs" placeholder="Confirmez votre mot de passe">
-                        <br>
-                        <label for = "image">Photo de profil :</label>
-                        <br>
-                        <input type ="file" id="image" name="image" class="champs">
-                        <br>
-                        <input type="checkbox" id="conditions" name = "conditions">
-                        <label for = "conditions">J'accepte les conditions d'utilisation et le règlement.</label>
-                        <br>
+
+                        <div id = "checkbox_conteneur">
+                            <input type="checkbox" id="conditions" name = "conditions">
+                            <label for = "conditions">J'accepte les conditions d'utilisation et le règlement.</label>
+                        </div>
                         <button type="submit" id="btn_inscription">S'inscrire</button>
                     </form>
+                    <div class="erreur"></div>
                     <form id="formulaire_connexion" class="active">
                         <label for = "email_connexion">Email :</label>
-                        <br>
-                        <input type = "email" id="email_connexion" name="email_connexion" class="champs">
-                        <br>
+                        <input type = "email" id="email_connexion" name="email_connexion" class="champs" placeholder="pierre.dupont@exemple.com">
+
                         <label for = "mdp_connexion">Mot de passe :</label>
-                        <br>
-                        <input type ="password" id="mdp_connexion" name="mdp_connexion" class="champs">
+                        <input type ="password" id="mdp_connexion" name="mdp_connexion" class="champs" placeholder="Entrez votre mot de passe">
                         <br>
                         <button type="submit" id="btn_connexion">Se connecter</button>
                     </form>
