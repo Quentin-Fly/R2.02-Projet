@@ -62,9 +62,12 @@ document.getElementById("formulaire_inscription").addEventListener("submit", fun
     const nom = document.getElementById("nom").value.trim();
     const prenom = document.getElementById("prenom").value.trim();
     const email = document.getElementById("email").value.trim();
-    const mdp = document.getElementById("mdp").value;
-    const mdp_confirmation = document.getElementById("mdp_confirmation").value;
+    const mdp = document.getElementById("mdp_inscription").value;
+    const mdp_confirmation = document.getElementById("confirmation_mdp").value;
     const reglementOK = document.getElementById("conditions").checked;
+
+    // Récupération des profils existants
+    const profilsExistants = recuperationProfilsExistants();
 
     // Validation des données
     let message_erreur = [];
@@ -81,6 +84,10 @@ document.getElementById("formulaire_inscription").addEventListener("submit", fun
     {
         message_erreur.push("L'email n'est pas valide.");
     }
+    if (profilsExistants.some(profil => profil.email === email)) // Vérifie si l'email existe déjà dans les profils existants
+    {
+        message_erreur.push("Cet email est déjà utilisé.");
+    }
     if (mdp === "")
     {
         message_erreur.push("Le mot de passe est requis.");
@@ -96,10 +103,75 @@ document.getElementById("formulaire_inscription").addEventListener("submit", fun
 
     // Gestion du message d'erreur
 
-    const erreur = document.querySelector(".erreur");
+    const erreur = document.getElementById("message_erreur");
 
     if (message_erreur.length > 0)
     {
-        erreur.innerHTML = `<h2>Erreurs de validation:</h2><ul>${message_erreur.map(msg => `<li>${msg}</li>`).join("")}</ul>`;
+        const boite_pop_up = document.querySelector(".pop_up");
+        const contenu_pop_up = document.querySelector(".pop_up_contenu"); // On cible la boîte blanche
+
+        // Nettoyage -> on retire les classes de fermeture pour réinitialiser l'opacité
+        boite_pop_up.classList.remove("fond_disparition");
+        contenu_pop_up.classList.remove("en_fermeture");
+
+        void boite_pop_up.offsetWidth;
+
+        // Affichage du pop-up d'erreur
+        boite_pop_up.classList.add("active");
+        erreur.innerHTML = `<ul>${message_erreur.map(msg => `<li>${msg}</li>`).join("")}</ul>`;
     }
-});
+    else
+    {
+        enregistrementDonneeInscription(pdp, nom, prenom, email, mdp);
+        document.querySelector(".pop_up.succes").classList.add("active"); // Affiche le pop-up de succès
+        // Réinitialisation du formulaire
+        document.getElementById("formulaire_inscription").reset();
+        document.getElementById("photo_profil_apercu").src = "";
+        document.getElementById("switch_connexion").click();
+    }
+// Fonction pour fermer la pop-up d'erreur
+function fermerPopUp()
+{
+    const boite_pop_up = document.querySelector(".pop_up");
+    const contenu_pop_up = document.querySelector(".pop_up_contenu");
+
+    boite_pop_up.classList.add("fond_disparition"); 
+    contenu_pop_up.classList.add("en_fermeture");   
+    
+    setTimeout(() => 
+    {
+        boite_pop_up.classList.remove("active");
+        boite_pop_up.classList.remove("fond_disparition");
+        contenu_pop_up.classList.remove("en_fermeture");
+    }, 300);
+}
+
+// Fonction qui récupère les données des profils
+function recuperationProfilsExistants()
+{
+    const profils = localStorage.getItem("profils");
+    if (profils) // Si des profils existent, convertit la chaîne JSON en tableau d'objets, sinon retourne une chaîne vide
+    {
+        return JSON.parse(profils);
+    }
+    return [];
+}
+
+// Fonction pour enregistrer le nouveau profil utilisateur
+function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
+{
+    const profils = recuperationProfilsExistants();
+
+    const nouveauProfil = 
+    {
+        image: image,
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        mdp: mdp
+    };
+
+    profils.push(nouveauProfil);
+    localStorage.setItem("profils", JSON.stringify(profils));
+}
+});         

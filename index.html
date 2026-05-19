@@ -70,7 +70,6 @@
                         </div>
                         <button type="submit" id="btn_inscription">S'inscrire</button>
                     </form>
-                    <div class="erreur"></div>
                     <form id="formulaire_connexion" class="active">
                         <label for = "email_connexion">Email :</label>
                         <input type = "email" id="email_connexion" name="email_connexion" class="champs" placeholder="pierre.dupont@exemple.com">
@@ -83,3 +82,27 @@
                 </div>
             </div>
         </section>
+        <!-- Pop-up d'erreur d'inscription -->
+        <div class="pop_up" class="erreur">
+            <div class="pop_up_contenu">
+                <h2>Erreur</h2>
+                <div class="ligne_claire"></div>
+
+                <p id="message_erreur">Message d'erreur</p>
+
+                <button onclick="fermerPopUp()" id="btn_fermer_erreur">Fermer</button>
+            </div>
+        </div>
+        <!-- Pop-up de succès inscription -->
+        <div class="pop_up" class="succes">
+            <div class="pop_up_contenu">
+                <h2>Succès</h2>
+                <div class="ligne_claire"></div>
+
+                <p>Inscription réussie !</p>
+
+                <button onclick="fermerPopUp()" id="btn_fermer_succes">Fermer</button>
+            </div>
+        </div>
+    </body>
+</html>
