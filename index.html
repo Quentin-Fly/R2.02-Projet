@@ -14,7 +14,7 @@
     </head>
     <body>
         <!-- Page d'accueil -->
-        <section id="page_acceuil"> 
+        <section id="page_accueil"> 
             <div class = "gauche">
                 <h1>Kampus</h1>
                 <div class="ligne_foncee"></div>
@@ -83,26 +83,32 @@
             </div>
         </section>
         <!-- Pop-up d'erreur d'inscription -->
-        <div class="pop_up" class="erreur">
+        <div class="pop_up erreur">
             <div class="pop_up_contenu">
                 <h2>Erreur</h2>
                 <div class="ligne_claire"></div>
 
                 <p id="message_erreur">Message d'erreur</p>
 
-                <button onclick="fermerPopUp()" id="btn_fermer_erreur">Fermer</button>
+                <button onclick="fermerPopUp('erreur')" id="btn_fermer_erreur">Fermer</button>
             </div>
         </div>
         <!-- Pop-up de succès inscription -->
-        <div class="pop_up" class="succes">
+        <div class="pop_up succes">
             <div class="pop_up_contenu">
                 <h2>Succès</h2>
                 <div class="ligne_claire"></div>
 
                 <p>Inscription réussie !</p>
 
-                <button onclick="fermerPopUp()" id="btn_fermer_succes">Fermer</button>
+                <button onclick="fermerPopUp('succes')" id="btn_fermer_succes">Fermer</button>
             </div>
         </div>
+        <!-- Section du fil d'actualité (cachée par défaut) -->
+        <section id="fil_actualite" style="display: none;">
+            
+            <h1>Bienvenue sur le fil d'actualité de Kampus !</h1>
+            <p>Découvrez les dernières publications de vos amis et partagez vos propres moments.</p>
+        </section>
     </body>
 </html>
