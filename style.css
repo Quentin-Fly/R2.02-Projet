@@ -12,10 +12,17 @@ html, body
     height : 100%;
 }
 
-#page_accueil 
+#page_accueil
 {
     display : flex;
     height : 100vh;
+}
+
+#fils_actualite
+{
+    display: flex;
+    height: calc(100vh - 70px); /* Prend tout l'écran moins la hauteur de la bannière */
+    width: 100%;
 }
 
 .gauche, .droite 
@@ -60,7 +67,7 @@ html, body
     border-radius : 2px;
     background : #1e40af;
 }
-/* Formulaire */
+/* FORMULAIRE */
 
 .formulaire_conteneur 
 {
@@ -179,8 +186,8 @@ input[type="checkbox"]
 {
     opacity : 1; /* Affiche l'overlay au survol */
 }
-/* Boutons */
-button
+/* BOUTONS */
+.button_defaut
 {
     background-color : #3b82f6;
     color : white;
@@ -242,15 +249,79 @@ button
 {
     transform : translateX(100%);
 }
-/* Styles pour le fils d'actualités */
-.fil_actualites
+/* STYLES POUR LA BANIÈRE */
+/*Banière*/
+.baniere
 {
-    display : flex;
-    flex-direction : column;
-    gap : 20px;
-    margin-top : 20px;
+    background-color : #0f172a;
+    color : #f8f9fa;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding-left: 30px;
+    padding-right: 30px;
 }
-/* Styles pour la pop-up */
+.contenaire_recherche
+{
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden; 
+    padding: 4px 8px; 
+    width: 100%;
+    max-width: 400px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.baniere button
+{
+    border: none;
+    background: transparent;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s, background-color 0.2s;
+    border-radius: 4px;
+}
+.baniere contenaire_recherche button
+{
+    color: #161616;
+}
+.baniere #btn_notifications
+{
+    color:#ccc
+}
+
+#barre_recherche
+{
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 8px 12px;
+    flex-grow: 1;
+    font-size: 14px;
+    width: 100%;
+    color: #333;
+}
+/*Effet de survol pour les boutons de la banière*/
+.baniere button:hover
+{
+    color: #1e40af;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+/* STYLES POUR LA BARRE LATERALE GAUCHE (File d'actualité) */
+#fils_actualite 
+
+/* STYLES POUR LA POP-UP */
 .pop_up
 {
     display : none;

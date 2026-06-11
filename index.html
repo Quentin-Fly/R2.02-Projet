@@ -27,8 +27,8 @@
                         <!-- Slider pour l'effet visuel du switch -->
                         <div class="slider"></div>
 
-                        <button id="switch_connexion" class="active">Connexion</button>
-                        <button id="switch_inscription">Inscription</button>
+                        <button class="button_defaut active" id="switch_connexion" class="active">Connexion</button>
+                        <button class="button_defaut" id="switch_inscription">Inscription</button>
                     </div>
                     <div class="ligne_claire"></div>
                     <!-- Formulaire d'inscription -->
@@ -68,7 +68,7 @@
                             <input type="checkbox" id="conditions" name = "conditions">
                             <label for = "conditions">J'accepte les conditions d'utilisation et le règlement.</label>
                         </div>
-                        <button type="submit" id="btn_inscription">S'inscrire</button>
+                        <button class="button_defaut" type="submit" id="btn_inscription">S'inscrire</button>
                     </form>
                     <form id="formulaire_connexion" class="active">
                         <label for = "email_connexion">Email :</label>
@@ -77,7 +77,7 @@
                         <label for = "mdp_connexion">Mot de passe :</label>
                         <input type ="password" id="mdp_connexion" name="mdp_connexion" class="champs" placeholder="Entrez votre mot de passe">
                         <br>
-                        <button type="submit" id="btn_connexion">Se connecter</button>
+                        <button class="button_defaut" type="submit" id="btn_connexion">Se connecter</button>
                     </form>
                 </div>
             </div>
@@ -90,7 +90,7 @@
 
                 <p id="message_erreur">Message d'erreur</p>
 
-                <button onclick="fermerPopUp('erreur')" id="btn_fermer_erreur">Fermer</button>
+                <button onclick="fermerPopUp('erreur')" id="btn_fermer_erreur" class="button_defaut">Fermer</button>
             </div>
         </div>
         <!-- Pop-up de succès inscription -->
@@ -101,7 +101,7 @@
 
                 <p>Inscription réussie !</p>
 
-                <button onclick="fermerPopUp('succes')" id="btn_fermer_succes">Fermer</button>
+                <button onclick="fermerPopUp('succes')" id="btn_fermer_succes" class="button_defaut">Fermer</button>
             </div>
         </div>
         <!-- Section du fil d'actualité (cachée par défaut) -->
