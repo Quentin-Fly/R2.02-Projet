@@ -242,6 +242,15 @@ button
 {
     transform : translateX(100%);
 }
+/* Styles pour le fils d'actualités */
+.fil_actualites
+{
+    display : flex;
+    flex-direction : column;
+    gap : 20px;
+    margin-top : 20px;
+}
+/* Styles pour la pop-up */
 .pop_up
 {
     display : none;
