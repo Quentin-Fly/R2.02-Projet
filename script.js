@@ -1,4 +1,4 @@
-// Fonction qui gère l'affichage des formulaires de connexion et d'inscription avec le bouton switch
+// Fonction qui gère l'affichage des formulaires de connexion et d'inscription avec le photo_profil_conteneur switch
 const btnConnexion = document.getElementById("switch_connexion");
 const btnInscription = document.getElementById("switch_inscription");
 const swtConteneur = document.querySelector(".switch");

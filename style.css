@@ -280,26 +280,6 @@ input[type="checkbox"]
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
-.baniere button
-{
-    border: none;
-    background: transparent;
-    padding: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    transition: color 0.2s, background-color 0.2s;
-    border-radius: 4px;
-}
-.baniere contenaire_recherche button
-{
-    color: #161616;
-}
-.baniere #btn_notifications
-{
-    color:#ccc
-}
 
 #barre_recherche
 {
@@ -318,8 +298,77 @@ input[type="checkbox"]
     color: #1e40af;
     background-color: rgba(59, 130, 246, 0.1);
 }
+/* STYLE EN COMMENT ENTRE BARRE LATERALE ET NAVIGATION */
+.baniere button, #menu_lateral_secondaire button
+{
+    border: none;
+    background: transparent;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    align-items: center;
+    transition: color 0.2s, background-color 0.2s;
+    border-radius: 4px;
+}
+.baniere contenaire_recherche button
+{
+    color: #161616;
+}
+.baniere #btn_notifications, #menu_lateral_secondaire button
+{
+    color:#cccccc
+}
 /* STYLES POUR LA BARRE LATERALE GAUCHE (File d'actualité) */
-#fils_actualite 
+#fils_actualite .gauche
+{
+    flex: 0 0 250px; 
+    padding: 30px 20px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: flex-start; 
+}
+
+/* Image de profils gauche*/
+#fils_actualite .gauche .photo_profil
+{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3b82f6;
+}
+/* Apparence du menu de la barre latérale */
+#menu_lateral_principal
+{
+    display : flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 180px;
+    align-items: center;
+}
+/* Apparence des boutons classique */
+#menu_lateral_principal  .btn_menu
+{
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background: #ffffff1a; 
+    color: #f8f9fa;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease;
+}
+/* Apparence des boutons avec icon uniqument */
+{
+    color:#cccccc
+}
 
 /* STYLES POUR LA POP-UP */
 .pop_up
