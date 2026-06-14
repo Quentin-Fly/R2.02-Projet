@@ -45,14 +45,17 @@
 
                 <div class="droite">
                     <h1>Fil d'actualité</h1>
-                    <div class="ligne_claire"></div>
-                    
+
                     <div class="carte_publication">
                         <h2>Créer une nouvelle publication</h2>
+                        <div class="ligne_claire">  </div>
                         <div class="publication_formulaire">
                             <textarea placeholder="Exprimez-vous..." id="publication_texte"></textarea>
-                            <button class="btn_publication" id="btn_publier"><i class="fa-solid fa-paper-plane"></i></button>
-                            <button class="btn_publication" id="btn_ajouter_image"><i class="fa-solid fa-image"></i></button>
+                            <div id="apercu_image"></div>
+                            <div id="bouton_publication">
+                                <button class="button_defaut" class="btn_publication" id="btn_ajouter_image"><i class="fa-solid fa-image"></i> Ajouter une image</button>
+                                <button class="button_defaut" class="btn_publication" id="btn_publier"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
                         </div>
                     </div>
 

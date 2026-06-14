@@ -10,6 +10,7 @@
 html, body 
 {
     height : 100%;
+    background : #f9fafb;
 }
 
 #page_accueil
@@ -43,7 +44,6 @@ html, body
 
 .droite 
 {
-    background : #f9fafb;
     padding : 50px;
 }
 /* Styles pour les lignes décoratives */
@@ -365,9 +365,58 @@ input[type="checkbox"]
     gap: 10px;
     transition: background 0.2s ease;
 }
-/* Apparence des boutons avec icon uniqument */
+/* STYLE DE LA SECTION DROITE GENERALE */
+#fils_actualite .droite
 {
-    color:#cccccc
+    flex: 1;
+    padding : 30px;
+    overflow-y: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap : 25px;
+    justify-content: flex-start;
+}
+#fils_actualite .droite, .carte_publication
+{
+    width: 750px;
+}
+
+/* Cartes des fils d'actualité */
+.carte_publication
+{
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+/* FORMULAIRE DE CREATION DE PUBLICATION */
+.publication_fromulaire
+{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+/* Style pour la zone de saisie */
+#publication_texte
+{
+    width: 100%;
+    height: 90px;
+    padding: 12px;
+    border : 1px solid #cdcdcd;
+    resize: none;
+    font-size: 14px;
+    outline: none;
+    background-color: #f8f9fa;
+    transition: border-color 0.2s;
+}
+#publication_texte:focus
+{
+    border-color: #3b82f6;
+    background-color: white;
 }
 
 /* STYLES POUR LA POP-UP */
