@@ -336,7 +336,7 @@ input[type="checkbox"]
     height: 128px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #3b82f6;
+    border: 2px solid #1e40af;
 }
 /* Apparence du menu de la barre latérale */
 #menu_lateral_principal
@@ -419,6 +419,80 @@ input[type="checkbox"]
     background-color: white;
 }
 
+/* AFFICHAGE D'UNE PUBLICATION */
+/* Sytle de l'entête de la publication */
+.entete_publication
+{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px
+}
+.publication_photo_profil
+{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #3b82f6
+}
+.publication_auteur
+{
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 15px;
+    font-style: bold;
+}
+.publication_date
+{
+    font-size: 12px;
+    color: #6b7280;
+    margin-left : auto;
+    font-style: italic
+}
+/* Style de la publication */
+.publication_contenu
+{
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify
+}
+/* Zone des boutons */
+.publication_actions
+{
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 15px
+}
+.publication_actions button
+{
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    display flex;
+    align-items:center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.publucation_actions button:hover
+{
+    background: #f1f5f9;
+    color: #3b82f6;
+}
+.publication_actions button:first-child:hover
+{
+    color: #3b82f6;
+}
 /* STYLES POUR LA POP-UP */
 .pop_up
 {
