@@ -289,7 +289,8 @@ function likerPublication(id)
 }
 
 // Déploiement/Repliement du volet de commentaires
-function basculerZoneCommentaires(id) {
+function basculerZoneCommentaires(id) 
+{
     const zone = document.getElementById(`zone-commentaires-${id}`);
     if (zone) {
         zone.style.display = zone.style.display === 'none' ? 'block' : 'none';
@@ -319,7 +320,8 @@ function ajouterCommentaire(id)
 }
 
 // Suppression d'un message si l'ID correspond
-function supprimerPublication(id) {
+function supprimerPublication(id) 
+{
     publications = publications.filter(pub => pub.id !== id);
     afficherPublication();
     ouvrirPopUp("succes");
@@ -328,7 +330,8 @@ function supprimerPublication(id) {
 }
 
 // Simulation du système de partage via l'affichage d'une alerte
-function partagerPublication(id) {
+function partagerPublication(id) 
+{
     const pub = publications.find(p => p.id === id);
     if (!pub) return;
     alert(`Lien de partage généré pour la publication de ${pub.nom_auteur} !`);
