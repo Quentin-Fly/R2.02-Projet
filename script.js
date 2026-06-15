@@ -90,19 +90,6 @@ formInscription.addEventListener("submit", (e) =>
         return;
     }
 
-    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (!regexEmail.test(email)) 
-    {
-        ouvrirPopUp("erreur", "Veuillez entrer une adresse email valide.");
-        return;
-    }
-
-    if (mdp.length < 8) 
-    {
-        ouvrirPopUp("erreur", "Le mot de passe doit contenir au moins 8 caractères.");
-        return;
-    }
-
     if (mdp !== confirmationMdp) 
     {
         ouvrirPopUp("erreur", "Les mots de passe ne correspondent pas.");
@@ -124,7 +111,26 @@ formInscription.addEventListener("submit", (e) =>
     }
 
     enregistrementDonneeInscription(photoProfilApercu.src, nom, prenom, email, mdp);
-    ouvrirPopUp("succes");
+    // On cible le texte à l'intérieur du pop-up succès pour le modifier
+    const texte_succes = document.querySelector(".pop_up.succes .pop_up_contenu p");
+    if (texte_succes) 
+    {
+        texte_succes.textContent = "Inscription réussie !";
+    }
+    afficherPublication();
+    ouvrirPopUp("succes");  
+
+    // On redirige vers la page de connexion
+    formConnexion.classList.add("active");
+    formInscription.classList.remove('active');
+
+    btnConnexion.classList.add("active");
+    btnInscription.classList.remove("active");
+
+    // On remet le switch côté connexion
+    swtConteneur.classList.remove("signup-active");
+
+    // On nettoye le formulaire de connexions
     formInscription.reset();
     photoProfilApercu.src = "data/utilisateur.png"; 
 });
@@ -140,17 +146,22 @@ formConnexion.addEventListener("submit", (e) =>
     const profils = recuperationProfilsExistants();
     const utilisateurTrouve = profils.find(p => p.email === emailInput && p.mdp === mdpInput);
 
-    if (utilisateurTrouve) {
+    if (utilisateurTrouve) 
+    {
         // Connexion avec le compte existant
-        utilisateurConnecte = {
+        utilisateurConnecte = 
+        {
             nom: utilisateurTrouve.prenom + " " + utilisateurTrouve.nom,
             email: utilisateurTrouve.email,
             image: utilisateurTrouve.image || "data/utilisateur.png"
         };
-    } else {
+    } 
+    else 
+    {
         // Compte de secours/test si le localStorage est vide pour faciliter tes tests rapides
-        utilisateurConnecte = {
-            nom: "Quentin R.",
+        utilisateurConnecte = 
+        {
+            nom: "Quentin CL.",
             email: emailInput,
             image: "data/utilisateur.png"
         };
@@ -323,6 +334,13 @@ function ajouterCommentaire(id)
 function supprimerPublication(id) 
 {
     publications = publications.filter(pub => pub.id !== id);
+
+    // On cible le texte à l'intérieur du pop-up succès pour le modifier
+    const texte_succes = document.querySelectorAll(".pop_up_succes .pop_up_contenu p");
+    if (texte_succes)
+    {
+        texte_succes.textContent = "Publication supprimée avec succès !";
+    }
     afficherPublication();
     ouvrirPopUp("succes");
     
