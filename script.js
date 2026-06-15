@@ -1,4 +1,27 @@
-// Fonction qui gère l'affichage des formulaires de connexion et d'inscription avec le photo_profil_conteneur switch
+// VARIABLE GLOBALE DE TESTE
+
+// Stockage de l'utilisateur connecté (null si il est déco)
+let utilisateurConnecte = null;
+
+// Création du base de donnée de test pour simulée des publication
+let publications = [
+    {
+        id : 1,
+        nom_auteur : "Tom Dupond",
+        email_auteur : "tom.dupond@uca.fr",
+        avatar_auteur : "data/utilisateur.png",
+        date : "Il y a 10 min",
+        contenu : "Est-ce que quelqu'un aurait les notes du cours de developpement Web de mardi dernier ? J'ai manqué la fin à cause d'un rdv. Merci d'avance !"
+        likes : 4,
+        liked_by: []// Stocke les emails (clef) des gens qui on laissé un like
+        commentaires : [
+            {
+                auteur: "Emma Bertrand", texte: "Je te les envoie en MP"
+            }
+        ]
+    }
+];
+// GESTION DU SWITCH
 const btnConnexion = document.getElementById("switch_connexion");
 const btnInscription = document.getElementById("switch_inscription");
 const swtConteneur = document.querySelector(".switch");
@@ -30,7 +53,7 @@ btnInscription.addEventListener("click", () =>
     swtConteneur.classList.add("signup-active");
 });
 
-// Fonction qui gère l'aperçu de la photo de profil dans le formulaire d'inscription
+// GESTION DE L'APERCU DE LA PP
 const inputImage = document.getElementById("image");
 const photoProfilApercu = document.getElementById("photo_profil_apercu");
 
@@ -48,7 +71,7 @@ inputImage.addEventListener("change", () =>
     }
 });
 
-// Fonction qui gère la validation du formulaire d'inscription
+// GESTION DU FORMULAIRE D'INSCRIPTION
 document.getElementById("formulaire_inscription").addEventListener("submit", function (event)
 {
     event.preventDefault();
@@ -128,7 +151,7 @@ document.getElementById("formulaire_inscription").addEventListener("submit", fun
     }
 });
 
-// Fonction qui gère la validation du formulaire de connexion
+// GESTION DU FORMULAIRE D'INSCRIPTION
 document.getElementById("formulaire_connexion").addEventListener("submit", function (event)
 {
     event.preventDefault();
@@ -171,7 +194,7 @@ document.getElementById("formulaire_connexion").addEventListener("submit", funct
         
     }
 });
-
+// GESTION DES POP-UPS
 // Fonction pour fermer la pop-up d'erreur ou de succès avec une animation de disparition
 function fermerPopUp(type)
 {
@@ -199,8 +222,7 @@ function recuperationProfilsExistants()
     }
     return [];
 }
-
-// Fonction pour enregistrer le nouveau profil utilisateur
+// ENREGOSTREMENT DU NOUVEAU PROFILS
 function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
 {
     const profils = recuperationProfilsExistants();
@@ -217,13 +239,121 @@ function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
     profils.push(nouveau_profil);
     localStorage.setItem("profils", JSON.stringify(profils));
 }
-
+// GESTION DE L'AFFICHAGE
 // Fonction pour faire disparaître la section page d'acceuil et afficher la section : fils d'actualité
 function afficherFilActualite()
 {
     const page_accueil = document.querySelector("#page_accueil");
-    const fil_actualite = document.querySelector("#fil_actualite");
+    const fil_actualite = document.querySelector("#page_fil_actualite");
 
     page_accueil.style.display = "none";
     fil_actualite.style.display = "block";
+}
+// Fonction qui gère la déconnexion, affiche la page de connexion
+document.getElementById('btn_deconnexion').addEventListener('click', () => 
+{
+    utilisateurConnecte = null;
+    document.getElementById('page_connexion').style.display = "block";      // Affiche la page de connexion
+    document.getElementById('page_fil_actualite').style.display = "none"    // Cache la page du fils d'actualité
+})
+
+// GESTION DES PUBLICATION (Affichage, création, suppression)
+const zone_publications = document.getElementById("zone_publications");
+const form_nouvelle_publication = document.getElementById("form_nouvelle_publication");
+
+// Fonction qui génère le code HTML des publication
+function afficherPublication()
+{
+    // On vide la zone avant de la reconstruire
+    zone_publications.innerHTML = ''
+    // On parcourt tout les publications et les crées
+    publications.forEach(pub)
+    {
+        // On créer une nouvelle publication avec la class "carte_publication"
+        const carte = document.createElement("div");
+        carte.className = "carte_publication";
+
+        // On vérifie si la publication appartient à l'utilisateur
+        const est_mon_message = utilisateurConnecte && pub.email_auteur === utilisateurConnecte.email;
+
+        // On affiche le bouton supprimer uniquement si le message nous appartien
+        const bouton_suppr = est_mon_message
+            ? '<button class="btn_supprimer" onclick="supprimerPublication(${pub.id})" style="color: #ef4444; margin-left: 10px; background: transparent; border: none; cursor: pointer;"><i class="fa-solid fa-trash"></i></button>`' : '';
+
+        // On construit le HTML de la carte publication
+        carte.innerHTML = `
+            <div class="entete_publication">
+            <img src="${pub.avatar}" alt="Profil" class="publication_photo_profil">
+                <div>
+                    <div class="publication_auteur">${pub.auteurNom} <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(${pub.auteurEmail})</span></div>
+                    <div class="publication_date">${pub.date}</div>
+                </div>
+                <div style="margin-left: auto; display: flex; align-items: center;">
+                    ${boutonSupprimer}
+                </div>
+            </div>
+            
+            <div class="publication_contenu">
+                ${pub.contenu}
+            </div>
+
+            <div style="display: flex; gap: 15px; font-size: 13px; color: #6b7280; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; margin-bottom: 10px;">
+                <span><i class="fa-solid fa-thumbs-up" style="color: #3b82f6;"></i> <span id="compteur-like-${pub.id}">${pub.likes}</span> J'aime</span>
+                <span><i class="fa-solid fa-comment"></i> ${pub.commentaires.length} Commentaire(s)</span>
+            </div>
+            
+            <div class="publication_actions">
+                <button onclick="likerPublication(${pub.id})" id="btn-like-action-${pub.id}" style="${pub.likedBy.includes(utilisateurConnecte.email) ? 'color: #3b82f6; font-weight: bold;' : ''}">
+                    <i class="fa-solid fa-thumbs-up"></i> J'aime
+                </button>
+                <button onclick="basculerCommentaires(${pub.id})"><i class="fa-solid fa-comment"></i> Commenter</button>
+                <button onclick="partagerPublication(${pub.id})"><i class="fa-solid fa-share"></i> Partager</button>
+            </div>
+
+            <div id="zone-commentaires-${pub.id}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
+                <div id="liste-commentaires-${pub.id}" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+                    ${pub.commentaires.map(c => `
+                        <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; font-size: 13px;">
+                            <strong>${c.auteur} :</strong> ${c.texte}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="input-commentaire-${pub.id}" placeholder="Écrire un commentaire..." style="flex: 1; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; outline: none;">
+                    <button onclick="ajouterCommentaire(${pub.id})" style="background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px;"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>`;
+        zone_publications.appendChild(carte);       
+
+    });
+}
+// Créer une nouvelle publication
+form_nouvelle_publication.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const texte = document.getElementById('publication_texte').value;
+
+    const nouvellePub = 
+    {
+        id: Date.now(), // Génère un ID unique basé sur le temps
+        nom_auteur: utilisateurConnecte.nom,
+        email_auteur: utilisateurConnecte.email,
+        avatar: utilisateurConnecte.avatar,
+        date: "À l'instant",
+        contenu: texte,
+        likes: 0,
+        likedBy: [],
+        commentaires: []
+    };
+
+    publications.unshift(nouvellePub);                      // On ajoute au début du tableau
+    document.getElementById('publication_texte').value = ''; // On vide le champ
+    afficherPublications();                                  // On rafraîchit l'affichage
+});
+
+// Supprimer une publication
+function supprimerPublication(id) {
+    // Filtrer le tableau pour retirer la publication choisie
+    publications = publications.filter(pub => pub.id !== id);
+    afficherPublications();
+    ouvrirPopUp("Succès", "Votre publication a bien été supprimée.");
 }

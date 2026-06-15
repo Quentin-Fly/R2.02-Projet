@@ -484,15 +484,12 @@ input[type="checkbox"]
     gap: 8px;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
-.publucation_actions button:hover
+.publication_actions button:hover
 {
     background: #f1f5f9;
     color: #3b82f6;
 }
-.publication_actions button:first-child:hover
-{
-    color: #3b82f6;
-}
+
 /* STYLES POUR LA POP-UP */
 .pop_up
 {
