@@ -27,7 +27,7 @@
                         <!-- Slider pour l'effet visuel du switch -->
                         <div class="slider"></div>
 
-                        <button class="button_defaut active" id="switch_connexion" class="active">Connexion</button>
+                        <button class="button_defaut active" id="switch_connexion">Connexion</button>
                         <button class="button_defaut" id="switch_inscription">Inscription</button>
                     </div>
                     <div class="ligne_claire"></div>
@@ -70,6 +70,7 @@
                         </div>
                         <button class="button_defaut" type="submit" id="btn_inscription">S'inscrire</button>
                     </form>
+                    <!-- Formulaire de connexion -->
                     <form id="formulaire_connexion" class="active">
                         <label for = "email_connexion">Email :</label>
                         <input type = "email" id="email_connexion" name="email_connexion" class="champs" placeholder="pierre.dupont@exemple.com">
@@ -114,16 +115,19 @@
                     <button id="btn_recherche" title="lancer la recherche"><i class="fa-solid fa-magnifying-glass"></i> </button>
                     <button id="btn_filtre_burger" title="Choisir un filtre"><i class="fa-solid fa-bars"></i></button>
                 </div>
-                <button id="btn_notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
+                <div id="menu_lateral_secondaire">
+                    <button id="btn_notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
+                    <button id="btn_deconnexion" title="Se déconnecter" style="color: #ef4444; margin-left: 10px; border: none; background: transparent; cursor: pointer;"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
             </div>
 
             <section id="fils_actualite">
                 
                 <div class="gauche">
                     <div class="photo_profil_conteneur">
-                        <img src="data/utilisateur.png" class="photo_profil" alt="Photo de profil">
+                        <img src="data/utilisateur.png" class="photo_profil" alt="Photo de profil" id="sidebar_avatar">
                     </div>
-                    <div id="nom-prenom">Prenom Nom</div>
+                    <div id="sidebar_nom" style="color: white; font-weight: bold; margin-bottom: 5px;">Prenom Nom</div>
                     <div class="ligne_foncee"></div>
                     <div id="menu_lateral_principal">
                         <button class="btn_menu"><i class="fa-solid fa-house"></i> Abonnements</button>
@@ -131,9 +135,8 @@
                         <button class="btn_menu"><i class="fa-solid fa-message"></i> Messages</button>
                     </div>
                     <div class="ligne_foncee"></div>
-                    <div id="menu_lateral_secondaire">
-                        <button class="btn_icon" id="btn_deconnexion"><i class="fa-solid fa-right-from-bracket"></i></button>
-                        <button class="btn_icon" id="btn_themes"><i class="fa-solid fa-sun"></i></button>
+                    <div id="menu_lateral_secondaire_icones">
+                        <button class="btn_icon" id="btn_themes" style="border: none; background: transparent; color: #ccc; cursor: pointer;"><i class="fa-solid fa-sun"></i></button>
                     </div>
                 </div>
 
@@ -143,33 +146,38 @@
                     <div class="carte_publication">
                         <h2>Créer une nouvelle publication</h2>
                         <div class="ligne_claire">  </div>
-                        <div class="publication_formulaire">
+                        <!-- Remplacement par une balise form indispensable pour le script_2.js -->
+                        <form id="form_nouvelle_publication" class="publication_formulaire" style="display: flex;">
                             <textarea placeholder="Exprimez-vous..." id="publication_texte"></textarea>
                             <div id="apercu_image"></div>
                             <div class="publication_actions">
-                                <button id="btn_ajouter_image"><i class="fa-solid fa-image"></i> Ajouter une image</button>
-                                <button id="btn_publier"><i class="fa-solid fa-paper-plane"></i> Publier</button>
+                                <button type="button" id="btn_ajouter_image"><i class="fa-solid fa-image"></i> Ajouter une image</button>
+                                <button type="submit" id="btn_publier"><i class="fa-solid fa-paper-plane"></i> Publier</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
 
-                    <div class="carte_publication">
-                        <div class="entete_publication">
-                            <img src="data/utilisateur.png" alt="Votre photo de profil" class="publication_photo_profil">
-                            <div class="publication_auteur">Prenom Nom</div>
-                            <div class="publication_date">Il y a 2 heures</div>
-                        </div>
-                        <div class="ligne_claire"></div>
-                        <div class="publication_contenu">
-                            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. 
-                            Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. 
-                            Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-                        </div>
-                    
-                        <div class="publication_actions">
-                            <button><i class="fa-solid fa-thumbs-up"></i> J'aime</button>
-                            <button><i class="fa-solid fa-comment"></i> Commenter</button>
-                            <button><i class="fa-solid fa-share"></i> Partager</button>
+                    <!-- Conteneur cible indispensable pour l'injection dynamique des posts via script_2.js -->
+                    <div id="zone_publications" style="width: 100%; display: flex; flex-direction: column; gap: 25px; align-items: center;">
+                        <!-- La publication modèle ci-dessous sera gérée par le JS -->
+                        <div class="carte_publication">
+                            <div class="entete_publication">
+                                <img src="data/utilisateur.png" alt="Votre photo de profil" class="publication_photo_profil">
+                                <div class="publication_auteur">Prenom Nom</div>
+                                <div class="publication_date">Il y a 2 heures</div>
+                            </div>
+                            <div class="ligne_claire"></div>
+                            <div class="publication_contenu">
+                                Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. 
+                                Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. 
+                                Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+                            </div>
+                        
+                            <div class="publication_actions">
+                                <button><i class="fa-solid fa-thumbs-up"></i> J'aime</button>
+                                <button><i class="fa-solid fa-comment"></i> Commenter</button>
+                                <button><i class="fa-solid fa-share"></i> Partager</button>
+                            </div>
                         </div>
                     </div>
                 </div> 
