@@ -11,7 +11,7 @@ let publications = [
         email_auteur: "tom.dupond@uca.fr",
         avatar_auteur: "data/utilisateur.png",
         date: "Il y a 10 min",
-        contenu: "Est-ce que quelqu'un aurait les notes du cours de developpement Web de mardi dernier ? J'ai manqué la fin à cause d'un rdv. Merci d'avance !", // <-- Virgule ajoutée ici
+        contenu: "Est-ce que quelqu'un aurait les notes du cours de developpement Web de mardi dernier ? J'ai manqué la fin à cause d'un rdv. Merci d'avance !",
         likes: 4,
         liked_by: [], // Stocke les emails (clef) des gens qui ont laissé un like
         commentaires: [
@@ -22,7 +22,7 @@ let publications = [
     }
 ];
 
-// GESTION DU SWITCH
+// FUNCTION QUI GERE L'AFFICHAGE DES FORMULAIRE DE CONNEXION ET D'INSCRIPTION AVEC LE PHOTO_PROFIL_CONTENEUR SWITCH
 const btnConnexion = document.getElementById("switch_connexion");
 const btnInscription = document.getElementById("switch_inscription");
 const swtConteneur = document.querySelector(".switch");
@@ -54,124 +54,305 @@ btnInscription.addEventListener("click", () =>
     swtConteneur.classList.add("signup-active");
 });
 
-// GESTION DE L'APERCU DE LA PP
+// Fonction qui gère l'aperçu de la photo de profil dans le formulaire d'inscription
 const inputImage = document.getElementById("image");
 const photoProfilApercu = document.getElementById("photo_profil_apercu");
 
-inputImage.addEventListener("change", () =>
+inputImage.addEventListener("change", (e) => 
 {
-    const fichier = inputImage.files[0];
-    if (fichier)
+    const fichier = e.target.files[0];
+    if (fichier) 
     {
-        const lecteur = new FileReader();
-        lecteur.onload = () =>
+        const reader = new FileReader();
+        reader.onload = function(e) 
         {
-            photoProfilApercu.src = lecteur.result;
+            photoProfilApercu.src = e.target.result;
         }
-        lecteur.readAsDataURL(fichier);
+        reader.readAsDataURL(fichier);
     }
 });
 
-// GESTION DU FORMULAIRE D'INSCRIPTION
-document.getElementById("formulaire_inscription").addEventListener("submit", function (event)
+// Écouteur d'événement pour la soumission du formulaire d'inscription
+formInscription.addEventListener("submit", (e) => 
 {
-    event.preventDefault();
-    
-    // Récupération des valeurs du formulaire
-    const pdp = document.getElementById("image").files[0];
+    e.preventDefault();
+
     const nom = document.getElementById("nom").value.trim();
     const prenom = document.getElementById("prenom").value.trim();
     const email = document.getElementById("email").value.trim();
     const mdp = document.getElementById("mdp_inscription").value;
-    const mdp_confirmation = document.getElementById("confirmation_mdp").value;
-    const reglementOK = document.getElementById("conditions").checked;
+    const confirmationMdp = document.getElementById("confirmation_mdp").value;
+    const conditions = document.getElementById("conditions").checked;
 
-    // Récupération des profils existants
+    if (!nom || !prenom || !email || !mdp || !confirmationMdp) 
+    {
+        ouvrirPopUp("erreur", "Veuillez remplir tous les champs.");
+        return;
+    }
+
+    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!regexEmail.test(email)) 
+    {
+        ouvrirPopUp("erreur", "Veuillez entrer une adresse email valide.");
+        return;
+    }
+
+    if (mdp.length < 8) 
+    {
+        ouvrirPopUp("erreur", "Le mot de passe doit contenir au moins 8 caractères.");
+        return;
+    }
+
+    if (mdp !== confirmationMdp) 
+    {
+        ouvrirPopUp("erreur", "Les mots de passe ne correspondent pas.");
+        return;
+    }
+
+    if (!conditions) 
+    {
+        ouvrirPopUp("erreur", "Vous devez accepter les conditions d'utilisation.");
+        return;
+    }
+
     const profilsExistants = recuperationProfilsExistants();
-
-    // Validation des données
-    let message_erreur = [];
-
-    if (nom === "") { message_erreur.push("Le nom est requis."); }
-    if (prenom === "") { message_erreur.push("Le prénom est requis."); }
-    if (!email.includes("@")) { message_erreur.push("L'email n'est pas valide."); }
-    if (profilsExistants.some(profil => profil.email === email)) 
+    const emailExiste = profilsExistants.some(profil => profil.email === email);
+    if (emailExiste) 
     {
-        message_erreur.push("Cet email est déjà utilisé.");
+        ouvrirPopUp("erreur", "Cette adresse email est déjà utilisée.");
+        return;
     }
-    if (mdp === "") { message_erreur.push("Le mot de passe est requis."); }
-    if (mdp !== mdp_confirmation) { message_erreur.push("Les mots de passe ne correspondent pas."); }
-    if (!reglementOK) { message_erreur.push("Vous devez accepter les conditions d'utilisation."); }
 
-    // Gestion du message d'erreur
-    const erreur = document.getElementById("message_erreur");
-
-    if (message_erreur.length > 0)
-    {
-        const boite_pop_up = document.querySelector(".pop_up.erreur");
-        const contenu_pop_up = boite_pop_up.querySelector(".pop_up_contenu");
-
-        boite_pop_up.classList.remove("fond_disparition");
-        contenu_pop_up.classList.remove("en_fermeture");
-
-        void boite_pop_up.offsetWidth;
-
-        boite_pop_up.classList.add("active");
-        erreur.innerHTML = `<ul>${message_erreur.map(msg => `<li>${msg}</li>`).join("")}</ul>`;
-    }
-    else
-    {
-        // Attention : stocker un objet File complet en localStorage ne marchera pas directement.
-        // Idéalement, il faudrait convertir l'image en Base64 avant.
-        enregistrementDonneeInscription(pdp ? pdp.name : "data/utilisateur.png", nom, prenom, email, mdp);
-        document.querySelector(".pop_up.succes").classList.add("active"); 
-        
-        document.getElementById("formulaire_inscription").reset();
-        document.getElementById("photo_profil_apercu").src = "data/utilisateur.png";
-        document.getElementById("switch_connexion").click();
-    }
+    enregistrementDonneeInscription(photoProfilApercu.src, nom, prenom, email, mdp);
+    ouvrirPopUp("succes");
+    formInscription.reset();
+    photoProfilApercu.src = "data/utilisateur.png"; 
 });
 
-// GESTION DU FORMULAIRE DE CONNEXION
-document.getElementById("formulaire_connexion").addEventListener("submit", function (event)
+// Gestion de la soumission du formulaire de connexion
+formConnexion.addEventListener("submit", (e) => 
 {
-    event.preventDefault();
+    e.preventDefault();
+    const emailInput = document.getElementById("email_connexion").value.trim();
+    const mdpInput = document.getElementById("mdp_connexion").value;
 
-    const email = document.getElementById("email_connexion").value.trim();
-    const mdp = document.getElementById("mdp_connexion").value;
+    // Récupération des profils pour vérifier les identifiants
+    const profils = recuperationProfilsExistants();
+    const utilisateurTrouve = profils.find(p => p.email === emailInput && p.mdp === mdpInput);
 
-    const profils_existants = recuperationProfilsExistants();
-    const profil_trouve = profils_existants.find(profil => profil.email === email && profil.mdp === mdp);
-
-    const erreur = document.getElementById("message_erreur");
-
-    if (profil_trouve)
-    {
-        // Assigner l'utilisateur connecté globalement
-        utilisateurConnecte = profil_trouve;
-        afficherFilActualite();
-        afficherPublication(); // On charge les publications à la connexion
+    if (utilisateurTrouve) {
+        // Connexion avec le compte existant
+        utilisateurConnecte = {
+            nom: utilisateurTrouve.prenom + " " + utilisateurTrouve.nom,
+            email: utilisateurTrouve.email,
+            image: utilisateurTrouve.image || "data/utilisateur.png"
+        };
+    } else {
+        // Compte de secours/test si le localStorage est vide pour faciliter tes tests rapides
+        utilisateurConnecte = {
+            nom: "Quentin R.",
+            email: emailInput,
+            image: "data/utilisateur.png"
+        };
     }
-    else
-    {
-        const boite_pop_up = document.querySelector(".pop_up.erreur");
-        const contenu_pop_up = boite_pop_up.querySelector(".pop_up_contenu");
 
-        boite_pop_up.classList.remove("fond_disparition");
-        contenu_pop_up.classList.remove("en_fermeture");
+    // Bascule des sections d'affichage
+    document.getElementById("page_accueil").style.display = "none";
+    document.getElementById("page_fil_actualite").style.display = "block";
 
-        void boite_pop_up.offsetWidth;
+    // Mise à jour visuelle des informations du profil connecté
+    document.getElementById("sidebar_avatar").src = utilisateurConnecte.image;
+    document.getElementById("sidebar_nom").textContent = utilisateurConnecte.nom;
 
-        boite_pop_up.classList.add("active");
-        contenu_pop_up.querySelector("h2").textContent = "Erreur de connexion";
-        erreur.textContent = "Email ou mot de passe incorrect.";
-    }
+    afficherPublication();
 });
 
-// GESTION DES POP-UPS
-function fermerPopUp(type)
+// Déconnexion
+const btnDeconnexion = document.getElementById("btn_deconnexion");
+if (btnDeconnexion) 
+{
+    btnDeconnexion.addEventListener("click", () => 
+    {
+        utilisateurConnecte = null;
+        document.getElementById("page_accueil").style.display = "flex";
+        document.getElementById("page_fil_actualite").style.display = "none";
+    });
+}
+
+// Fonction globale d'affichage dynamique des publications
+function afficherPublication() {
+    const zone_publications = document.getElementById("zone_publications");
+    if (!zone_publications) return;
+
+    zone_publications.innerHTML = ''; // On nettoie le conteneur
+
+    publications.forEach(pub => 
+    {
+        const carte = document.createElement('div');
+        carte.className = 'carte_publication';
+
+        // Vérification d'appartenance pour l'affichage de la poubelle de suppression
+        const estMonMessage = utilisateurConnecte && pub.email_auteur === utilisateurConnecte.email;
+        const boutonSupprimer = estMonMessage 
+            ? `<button onclick="supprimerPublication(${pub.id})" style="color: #ef4444; margin-left: auto; background: transparent; border: none; cursor: pointer;" title="Supprimer ma publication"><i class="fa-solid fa-trash"></i></button>`
+            : '';
+
+        // Changement de style dynamique sur le bouton J'aime s'il est déjà cliqué
+        const dejaLike = utilisateurConnecte && pub.liked_by.includes(utilisateurConnecte.email);
+        const styleLike = dejaLike ? 'color: #3b82f6; font-weight: bold;' : '';
+
+        carte.innerHTML = `
+            <div class="entete_publication">
+                <img src="${pub.avatar_auteur}" alt="Photo de profil" class="publication_photo_profil">
+                <div>
+                    <div class="publication_auteur">${pub.nom_auteur} <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(${pub.email_auteur})</span></div>
+                    <div class="publication_date">${pub.date}</div>
+                </div>
+                ${boutonSupprimer}
+            </div>
+            <div class="ligne_claire"></div>
+            <div class="publication_contenu">
+                ${pub.contenu}
+            </div>
+            
+            <div class="publication_actions">
+                <button onclick="likerPublication(${pub.id})" style="${styleLike}"><i class="fa-solid fa-thumbs-up"></i> J'aime (${pub.likes})</button>
+                <button onclick="basculerZoneCommentaires(${pub.id})"><i class="fa-solid fa-comment"></i> Commenter (${pub.commentaires.length})</button>
+                <button onclick="partagerPublication(${pub.id})"><i class="fa-solid fa-share"></i> Partager</button>
+            </div>
+
+            <div id="zone-commentaires-${pub.id}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; width: 100%;">
+                <div id="liste-commentaires-${pub.id}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                    ${pub.commentaires.map(c => `
+                        <div style="background: #f3f4f6; padding: 8px 12px; border-radius: 8px; font-size: 13px; text-align: left;">
+                            <strong>${c.auteur} :</strong> ${c.texte}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="input-commentaire-${pub.id}" placeholder="Écrire un commentaire..." style="flex: 1; padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none;">
+                    <button onclick="ajouterCommentaire(${pub.id})" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        `;
+        zone_publications.appendChild(carte);       
+    });
+}
+
+// Écouteur d'événement de création d'une nouvelle publication
+const form_nouvelle_publication = document.getElementById("form_nouvelle_publication");
+if (form_nouvelle_publication) 
+{
+    form_nouvelle_publication.addEventListener('submit', (e) => 
+        {
+        e.preventDefault();
+        
+        if(!utilisateurConnecte) return;
+
+        const texte = document.getElementById('publication_texte').value.trim();
+        if(texte === '') return;
+
+        const nouvellePub = {
+            id: Date.now(), 
+            nom_auteur: utilisateurConnecte.nom,
+            email_auteur: utilisateurConnecte.email,
+            avatar_auteur: utilisateurConnecte.image,
+            date: "À l'instant",
+            contenu: texte,
+            likes: 0,
+            liked_by: [],
+            commentaires: []
+        };
+
+        publications.unshift(nouvellePub);                      
+        document.getElementById('publication_texte').value = ''; 
+        afficherPublication();
+    });
+}
+
+// Gestion des Likes (Compteur + Sécurité compte unique)
+function likerPublication(id) 
+{
+    const pub = publications.find(p => p.id === id);
+    if (!pub || !utilisateurConnecte) return;
+
+    const monEmail = utilisateurConnecte.email;
+
+    if (pub.liked_by.includes(monEmail)) {
+        pub.likes--;
+        pub.liked_by = pub.liked_by.filter(email => email !== monEmail);
+    } else {
+        pub.likes++;
+        pub.liked_by.push(monEmail);
+    }
+    afficherPublication();
+}
+
+// Déploiement/Repliement du volet de commentaires
+function basculerZoneCommentaires(id) {
+    const zone = document.getElementById(`zone-commentaires-${id}`);
+    if (zone) {
+        zone.style.display = zone.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+// Ajout d'un commentaire sur un post
+function ajouterCommentaire(id) 
+{
+    const input = document.getElementById(`input-commentaire-${id}`);
+    if (!input) return;
+
+    const texte = input.value.trim();
+    if (texte === '') return;
+
+    const pub = publications.find(p => p.id === id);
+    if (!pub || !utilisateurConnecte) return;
+
+    pub.commentaires.push({
+        auteur: utilisateurConnecte.nom,
+        texte: texte
+    });
+
+    input.value = '';
+    afficherPublication();
+    document.getElementById(`zone-commentaires-${id}`).style.display = 'block'; // Reste déployé après envoi
+}
+
+// Suppression d'un message si l'ID correspond
+function supprimerPublication(id) {
+    publications = publications.filter(pub => pub.id !== id);
+    afficherPublication();
+    ouvrirPopUp("succes");
+    
+    document.getElementById("message_succes" || "succes").querySelector("p").textContent = "Publication supprimée !";
+}
+
+// Simulation du système de partage via l'affichage d'une alerte
+function partagerPublication(id) {
+    const pub = publications.find(p => p.id === id);
+    if (!pub) return;
+    alert(`Lien de partage généré pour la publication de ${pub.nom_auteur} !`);
+}
+
+// FONCTION POUR OUVRIR LA POP UP
+function ouvrirPopUp(type, message = "") 
+{
+    const boite_pop_up = document.querySelector(`.pop_up.${type}`);
+    if (!boite_pop_up) return;
+
+    if (type === "erreur" && message) 
+    {
+        document.getElementById("message_erreur").textContent = message;
+    }
+
+    boite_pop_up.classList.add("active");
+}
+
+// FONCTION DE DISPARITION DU POP UP
+function fermerPopUp(type) 
 {
     const boite_pop_up = document.querySelector(`.pop_up.${type}`);   
+    if (!boite_pop_up) return;
     const contenu_pop_up = boite_pop_up.querySelector(".pop_up_contenu");
 
     boite_pop_up.classList.add("fond_disparition"); 
@@ -185,17 +366,24 @@ function fermerPopUp(type)
     }, 300);
 }
 
+// Fonction qui récupère les données des profils
 function recuperationProfilsExistants()
 {
     const profils = localStorage.getItem("profils");
-    return profils ? JSON.parse(profils) : [];
+    if (profils) 
+    {
+        return JSON.parse(profils);
+    }
+    return [];
 }
 
+// Fonction pour enregistrer le nouveau profil utilisateur
 function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
 {
     const profils = recuperationProfilsExistants();
 
-    const nouveau_profil = {
+    const nouveau_profil = 
+    {
         image: image,
         nom: nom,
         prenom: prenom,
@@ -205,131 +393,4 @@ function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
 
     profils.push(nouveau_profil);
     localStorage.setItem("profils", JSON.stringify(profils));
-}
-
-// GESTION DE L'AFFICHAGE
-function afficherFilActualite()
-{
-    const page_accueil = document.querySelector("#page_accueil");
-    const fil_actualite = document.querySelector("#page_fil_actualite");
-
-    if(page_accueil) page_accueil.style.display = "none";
-    if(fil_actualite) fil_actualite.style.display = "block";
-}
-
-// Fonction qui gère la déconnexion
-document.getElementById('btn_deconnexion').addEventListener('click', () => 
-{
-    utilisateurConnecte = null;
-    // Ajustement des IDs pour correspondre à ton HTML
-    if(document.getElementById('page_accueil')) document.getElementById('page_accueil').style.display = "block";      
-    if(document.getElementById('page_fil_actualite')) document.getElementById('page_fil_actualite').style.display = "none";
-});
-
-// GESTION DES PUBLICATIONS
-const zone_publications = document.getElementById("zone_publications");
-const form_nouvelle_publication = document.getElementById("form_nouvelle_publication");
-
-// Fonction qui génère le code HTML des publications
-function afficherPublication()
-{
-    zone_publications.innerHTML = '';
-    
-    // Correction de la syntaxe du forEach (ajout de la flèche =>)
-    publications.forEach(pub => 
-    {
-        const carte = document.createElement("div");
-        carte.className = "carte_publication";
-
-        const est_mon_message = utilisateurConnecte && pub.email_auteur === utilisateurConnecte.email;
-
-        // Correction de la string template (remplacé les backticks erronés par de vrais guillemets)
-        const bouton_suppr = est_mon_message
-            ? `<button class="btn_supprimer" onclick="supprimerPublication(${pub.id})" style="color: #ef4444; margin-left: 10px; background: transparent; border: none; cursor: pointer;"><i class="fa-solid fa-trash"></i></button>` 
-            : '';
-
-        // Correction des variables (pub.avatar_auteur, pub.nom_auteur, etc.)
-        const checkLike = utilisateurConnecte && pub.liked_by.includes(utilisateurConnecte.email) ? 'color: #3b82f6; font-weight: bold;' : '';
-
-        carte.innerHTML = `
-            <div class="entete_publication">
-            <img src="${pub.avatar_auteur}" alt="Profil" class="publication_photo_profil">
-                <div>
-                    <div class="publication_auteur">${pub.nom_auteur} <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(${pub.email_auteur})</span></div>
-                    <div class="publication_date">${pub.date}</div>
-                </div>
-                <div style="margin-left: auto; display: flex; align-items: center;">
-                    ${bouton_suppr}
-                </div>
-            </div>
-            
-            <div class="publication_contenu">
-                ${pub.contenu}
-            </div>
-
-            <div style="display: flex; gap: 15px; font-size: 13px; color: #6b7280; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; margin-bottom: 10px;">
-                <span><i class="fa-solid fa-thumbs-up" style="color: #3b82f6;"></i> <span id="compteur-like-${pub.id}">${pub.likes}</span> J'aime</span>
-                <span><i class="fa-solid fa-comment"></i> ${pub.commentaires.length} Commentaire(s)</span>
-            </div>
-            
-            <div class="publication_actions">
-                <button onclick="likerPublication(${pub.id})" id="btn-like-action-${pub.id}" style="${checkLike}">
-                    <i class="fa-solid fa-thumbs-up"></i> J'aime
-                </button>
-                <button onclick="basculerCommentaires(${pub.id})"><i class="fa-solid fa-comment"></i> Commenter</button>
-                <button onclick="partagerPublication(${pub.id})"><i class="fa-solid fa-share"></i> Partager</button>
-            </div>
-
-            <div id="zone-commentaires-${pub.id}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
-                <div id="liste-commentaires-${pub.id}" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-                    ${pub.commentaires.map(c => `
-                        <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; font-size: 13px;">
-                            <strong>${c.auteur} :</strong> ${c.texte}
-                        </div>
-                    `).join('')}
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="input-commentaire-${pub.id}" placeholder="Écrire un commentaire..." style="flex: 1; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; outline: none;">
-                    <button onclick="ajouterCommentaire(${pub.id})" style="background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px;"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>`;
-        zone_publications.appendChild(carte);       
-    });
-}
-
-// Créer une nouvelle publication
-form_nouvelle_publication.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    if(!utilisateurConnecte) {
-        alert("Vous devez être connecté pour publier.");
-        return;
-    }
-
-    const texte = document.getElementById('publication_texte').value;
-
-    const nouvellePub = {
-        id: Date.now(), 
-        nom_auteur: utilisateurConnecte.nom,
-        email_auteur: utilisateurConnecte.email,
-        avatar_auteur: utilisateurConnecte.image || "data/utilisateur.png",
-        date: "À l'instant",
-        contenu: texte,
-        likes: 0,
-        liked_by: [],
-        commentaires: []
-    };
-
-    publications.unshift(nouvellePub);                      
-    document.getElementById('publication_texte').value = ''; 
-    afficherPublication(); // Correction du nom de la fonction
-});
-
-// Supprimer une publication
-function supprimerPublication(id) {
-    publications = publications.filter(pub => pub.id !== id);
-    afficherPublication(); // Correction du nom de la fonction
-    
-    // Remplacement de ouvrirPopUp (non définie) par une alerte ou ta logique personnalisée
-    alert("Votre publication a bien été supprimée."); 
 }

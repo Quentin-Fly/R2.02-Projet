@@ -478,7 +478,7 @@ input[type="checkbox"]
     font-weight: 500;
     cursor: pointer;
     border-radius: 8px;
-    display flex;
+    display: flex;
     align-items:center;
     justify-content: center;
     gap: 8px;
