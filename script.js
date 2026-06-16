@@ -282,7 +282,7 @@ if (form_nouvelle_publication)
 
         const nouvellePub = {
             id: Date.now(), 
-            nom_auteur: ...utilisateur_connecte.nom,
+            nom_auteur: utilisateur_connecte.nom,
             email_auteur: utilisateur_connecte.email,
             avatar_auteur: utilisateur_connecte.image,
             date: "À l'instant",
