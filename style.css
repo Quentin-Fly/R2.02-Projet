@@ -489,6 +489,15 @@ input[type="checkbox"]
     background: #f1f5f9;
     color: #3b82f6;
 }
+/* Style du bouton de suppression */
+#btn_suppr
+{
+    color: #ef4444; 
+    margin-left: auto; 
+    background: transparent; 
+    border: none; 
+    cursor: pointer
+}
 
 /* STYLES POUR LA POP-UP */
 .pop_up

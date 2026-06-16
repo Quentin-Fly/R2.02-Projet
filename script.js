@@ -1,7 +1,7 @@
 // VARIABLE GLOBALE DE TEST
 
 // Stockage de l'utilisateur connecté (null s'il est déconnecté)
-let utilisateurConnecte = null;
+let utilisateur_connecte = null;
 
 // Création d'une base de données de test pour simuler des publications
 let publications = [
@@ -102,9 +102,10 @@ formInscription.addEventListener("submit", (e) =>
         return;
     }
 
-    const profilsExistants = recuperationProfilsExistants();
-    const emailExiste = profilsExistants.some(profil => profil.email === email);
-    if (emailExiste) 
+    const profils_existants = recuperationProfilsExistants();
+    const email_existe = profils_existants.some(profil => profil.email === email);
+
+    if (email_existe) 
     {
         ouvrirPopUp("erreur", "Cette adresse email est déjà utilisée.");
         return;
@@ -139,17 +140,17 @@ formInscription.addEventListener("submit", (e) =>
 formConnexion.addEventListener("submit", (e) => 
 {
     e.preventDefault();
-    const emailInput = document.getElementById("email_connexion").value.trim();
-    const mdpInput = document.getElementById("mdp_connexion").value;
+    const email_input = document.getElementById("email_connexion").value.trim();
+    const mdp_input = document.getElementById("mdp_connexion").value;
 
     // Récupération des profils pour vérifier les identifiants
     const profils = recuperationProfilsExistants();
-    const utilisateurTrouve = profils.find(p => p.email === emailInput && p.mdp === mdpInput);
+    const utilisateur_trouve = profils.find(p => p.email === email_input && p.mdp === mdp_input);
 
-    if (utilisateurTrouve) 
+    if (utilisateur_trouve) 
     {
-        // Connexion avec le compte existant
-        utilisateurConnecte = 
+        // Connexion avec le compte trouvé dans le localStorage
+        utilisateur_connecte = 
         {
             nom: utilisateurTrouve.prenom + " " + utilisateurTrouve.nom,
             email: utilisateurTrouve.email,
@@ -158,22 +159,31 @@ formConnexion.addEventListener("submit", (e) =>
     } 
     else 
     {
-        // Compte de secours/test si le localStorage est vide pour faciliter tes tests rapides
-        utilisateurConnecte = 
+        // Compte de secours si le localStorage est vide
+        utilisateur_connecte = 
         {
-            nom: "Quentin CL.",
-            email: emailInput,
+            nom: "Inconnue",
+            email: email_input,
             image: "data/utilisateur.png"
         };
     }
 
     // Bascule des sections d'affichage
     document.getElementById("page_accueil").style.display = "none";
-    document.getElementById("page_fil_actualite").style.display = "block";
+    document.getElementById("page_fil_actualite").style.display = "flex"; 
 
-    // Mise à jour visuelle des informations du profil connecté
-    document.getElementById("sidebar_avatar").src = utilisateurConnecte.image;
-    document.getElementById("sidebar_nom").textContent = utilisateurConnecte.nom;
+    // On cible directement les classes
+    const avatar_profil = document.querySelector(".profil_carte img");
+    const nom_profil = document.querySelector(".profil_carte .nom_utilisateur");
+
+    if (avatar_profil) 
+    {
+        avatar_profil.src = utilisateur_connecte.image;
+    }
+    if (nom_profil) 
+    {
+        nom_profil.textContent = utilisateur_connecte.nom;
+    }
 
     afficherPublication();
 });
@@ -184,7 +194,7 @@ if (btnDeconnexion)
 {
     btnDeconnexion.addEventListener("click", () => 
     {
-        utilisateurConnecte = null;
+        utilisateur_connecte = null;
         document.getElementById("page_accueil").style.display = "flex";
         document.getElementById("page_fil_actualite").style.display = "none";
     });
@@ -203,9 +213,9 @@ function afficherPublication() {
         carte.className = 'carte_publication';
 
         // Vérification d'appartenance pour l'affichage de la poubelle de suppression
-        const estMonMessage = utilisateurConnecte && pub.email_auteur === utilisateurConnecte.email;
+        const estMonMessage = utilisateur_connecte && pub.email_auteur === utilisateur_connecte.email;
         const boutonSupprimer = estMonMessage 
-            ? `<button onclick="supprimerPublication(${pub.id})" style="color: #ef4444; margin-left: auto; background: transparent; border: none; cursor: pointer;" title="Supprimer ma publication"><i class="fa-solid fa-trash"></i></button>`
+            ? `<button onclick="supprimerPublication(${pub.id}) id="btn_suppr" title="Supprimer ma publication"><i class="fa-solid fa-trash"></i></button>`
             : '';
 
         // Changement de style dynamique sur le bouton J'aime s'il est déjà cliqué
@@ -255,7 +265,7 @@ const form_nouvelle_publication = document.getElementById("form_nouvelle_publica
 if (form_nouvelle_publication) 
 {
     form_nouvelle_publication.addEventListener('submit', (e) => 
-        {
+    {
         e.preventDefault();
         
         if(!utilisateurConnecte) return;
@@ -287,14 +297,17 @@ function likerPublication(id)
     const pub = publications.find(p => p.id === id);
     if (!pub || !utilisateurConnecte) return;
 
-    const monEmail = utilisateurConnecte.email;
+    const mon_email = utilisateurConnecte.email;
 
-    if (pub.liked_by.includes(monEmail)) {
+    if (pub.liked_by.includes(mon_email)) 
+    {
         pub.likes--;
-        pub.liked_by = pub.liked_by.filter(email => email !== monEmail);
-    } else {
+        pub.liked_by = pub.liked_by.filter(email => email !== mon_email);
+    } 
+    else 
+    {
         pub.likes++;
-        pub.liked_by.push(monEmail);
+        pub.liked_by.push(mon_email);
     }
     afficherPublication();
 }
@@ -303,7 +316,8 @@ function likerPublication(id)
 function basculerZoneCommentaires(id) 
 {
     const zone = document.getElementById(`zone-commentaires-${id}`);
-    if (zone) {
+    if (zone) 
+    {
         zone.style.display = zone.style.display === 'none' ? 'block' : 'none';
     }
 }
