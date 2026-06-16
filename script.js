@@ -1,5 +1,9 @@
 // VARIABLE GLOBALE DE TEST
 
+// Variables d'état pour le filtrage et la recherche
+let filtreActuel = "toutes"; 
+let rechercheTexte = "";
+
 // Stockage de l'utilisateur connecté (null s'il est déconnecté)
 let utilisateur_connecte = null;
 
@@ -198,14 +202,40 @@ if (btnDeconnexion)
 // Fonction globale d'affichage dynamique des publications
 function afficherPublication() {
     const zone_publications = document.getElementById("zone_publications");
-    if (!zone_publications) 
-    {
+    if (!zone_publications) return;
+    
+    zone_publications.innerHTML = ''; 
+
+    // Filtrage logique
+    let publicationsFiltrees = publications.filter(pub => {
+        const correspondTexte = 
+            pub.contenu.toLowerCase().includes(rechercheTexte.toLowerCase()) ||
+            pub.nom_auteur.toLowerCase().includes(rechercheTexte.toLowerCase()) ||
+            pub.email_auteur.toLowerCase().includes(rechercheTexte.toLowerCase());
+
+        let correspondCategorie = true;
+        if (filtreActuel === "mes_publications" && utilisateur_connecte) {
+            correspondCategorie = (pub.email_auteur === utilisateur_connecte.email);
+        } else if (filtreActuel === "aimees" && utilisateur_connecte) {
+            correspondCategorie = pub.liked_by.includes(utilisateur_connecte.email);
+        }
+
+        return correspondTexte && correspondCategorie;
+    });
+
+    // Affichage si vide
+    if (publicationsFiltrees.length === 0) {
+        zone_publications.innerHTML = `
+            <div class="carte_publication publication_recherche_vide">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <p>Aucune publication ne correspond à vos critères.</p>
+            </div>
+        `;
         return;
     }
-    zone_publications.innerHTML = ''; // On nettoie le conteneur
 
-    publications.forEach(pub => 
-    {
+    // Génération des cartes publication
+    publicationsFiltrees.forEach(pub => {
         const carte = document.createElement('div');
         carte.className = 'carte_publication';
 
@@ -215,14 +245,14 @@ function afficherPublication() {
             : '';
 
         const dejaLike = utilisateur_connecte && pub.liked_by.includes(utilisateur_connecte.email);
-        const styleLike = dejaLike ? 'color: #3b82f6; font-weight: bold;' : '';
+        const classeLike = dejaLike ? 'class="publication_like_actif"' : '';
 
         carte.innerHTML = `
             <div class="entete_publication">
                 <img src="${pub.avatar_auteur}" alt="Photo de profil" class="publication_photo_profil">
                 <div>
-                    <div class="publication_auteur">${pub.nom_auteur} <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(${pub.email_auteur})</span></div>
-                    <div class="publication_date">${pub.date}</div>
+                    <div class="publication_auteur">${pub.nom_auteur} <span class="publication_auteur_email">(${pub.email_auteur})</span></div>
+                    <div class="publication_date">${formaterDate(pub.date)}</div>
                 </div>
                 ${boutonSupprimer}
             </div>
@@ -232,35 +262,34 @@ function afficherPublication() {
             </div>
 
             ${pub.image_contenu ? `
-                <div class="publication_image_zone" style="margin-top: 12px; width: 100%; max-height: 400px; overflow: hidden; border-radius: 8px;">
-                    <img src="${pub.image_contenu}" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+                <div class="publication_image_zone">
+                    <img src="${pub.image_contenu}" alt="Image">
                 </div>
             ` : ''}
             
             <div class="publication_actions">
-                <button onclick="likerPublication(${pub.id})" style="${styleLike}"><i class="fa-solid fa-thumbs-up"></i> J'aime (${pub.likes})</button>
+                <button onclick="likerPublication(${pub.id})" ${classeLike}><i class="fa-solid fa-thumbs-up"></i> J'aime (${pub.likes})</button>
                 <button onclick="basculerZoneCommentaires(${pub.id})"><i class="fa-solid fa-comment"></i> Commenter (${pub.commentaires.length})</button>
                 <button onclick="partagerPublication(${pub.id})"><i class="fa-solid fa-share"></i> Partager</button>
             </div>
 
-            <div id="zone-commentaires-${pub.id}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; width: 100%;">
-                <div id="liste-commentaires-${pub.id}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+            <div id="zone-commentaires-${pub.id}" class="zone_commentaires_bloc">
+                <div id="liste-commentaires-${pub.id}" class="liste_commentaires_boite">
                     ${pub.commentaires.map(c => `
-                        <div style="background: #f3f4f6; padding: 8px 12px; border-radius: 8px; font-size: 13px; text-align: left;">
+                        <div class="commentaire_unitaire">
                             <strong>${c.auteur} :</strong> ${c.texte}
                         </div>
                     `).join('')}
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="input-commentaire-${pub.id}" placeholder="Écrire un commentaire..." style="flex: 1; padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none;">
-                    <button onclick="ajouterCommentaire(${pub.id})" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;"><i class="fa-solid fa-paper-plane"></i></button>
+                <div class="zone_saisie_commentaire">
+                    <input type="text" id="input-commentaire-${pub.id}" placeholder="Écrire un commentaire..." class="input_nouveau_commentaire">
+                    <button onclick="ajouterCommentaire(${pub.id})" class="btn_envoyer_commentaire"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
         `;
         zone_publications.appendChild(carte);       
     });
-}
-
+}      
 // Écouteur d'événement de création d'une nouvelle publication
 const form_nouvelle_publication = document.getElementById("form_nouvelle_publication");
 if (form_nouvelle_publication) 
@@ -283,13 +312,13 @@ if (form_nouvelle_publication)
             return;
         }
 
-        const nouvellePub = {
+        const nouvelle_pub = {
             id: Date.now(), 
             nom_auteur: utilisateur_connecte.nom,
             email_auteur: utilisateur_connecte.email,
             // Suppression de cyber_image_security qui n'est pas défini pour éviter un crash
             avatar_auteur: utilisateur_connecte.image,
-            date: "À l'instant",
+            date: Date.now(),
             contenu: texte,
             image_contenu: temp_image_publication || "", // Utilisation de la bonne variable
             likes: 0,
@@ -297,7 +326,7 @@ if (form_nouvelle_publication)
             commentaires: []
         };
 
-        publications.unshift(nouvellePub);                      
+        publications.unshift(nouvelle_pub);                      
         document.getElementById('publication_texte').value = ''; 
         
         // Nettoyage de l'aperçu après publication avec les bonnes variables globales
@@ -413,52 +442,64 @@ function ouvrirPopUp(type, message = "")
 
     boite_pop_up.classList.add("active");
 }
-
-// FONCTION DE DISPARITION DU POP UP
-function fermerPopUp(type) 
+// GESTION DES FILTRES ET RECHERCHE
+// Écouteur sur la barre de recherche
+const barreRecherche = document.getElementById("barre_recherche");
+if (barreRecherche) 
 {
-    const boite_pop_up = document.querySelector(`.pop_up.${type}`);   
-    if (!boite_pop_up) return;
-    const contenu_pop_up = boite_pop_up.querySelector(".pop_up_contenu");
-
-    boite_pop_up.classList.add("fond_disparition"); 
-    if (contenu_pop_up) contenu_pop_up.classList.add("en_fermeture");   
-    
-    setTimeout(() => 
+    barreRecherche.addEventListener("input", (e) => 
     {
-        boite_pop_up.classList.remove("active");
-        boite_pop_up.classList.remove("fond_disparition");
-        if (contenu_pop_up) contenu_pop_up.classList.remove("en_fermeture");
-    }, 300);
-}
-// PARTIE GESTION APERCU IMAGE PUBLICATION
-const btn_ajouter_image = document.getElementById("btn_ajouter_image");
-const input_image = document.getElementById("publication_image_input");
-const conteneur_apercu = document.getElementById("conteneur_apercu_image");
-const image_apercu = document.getElementById("apercu_image_publication");
-
-// Variable temporaire pour stocker l'image
-let temp_image_publication
-
-if (btn_ajouter_image && input_image)
-{
-    btn_ajouter_image.addEventListener("click", () => input_image.click());
-
-    input_image.addEventListener("change", (e) => 
-    {
-        const fichier = e.target.files[0];
-        if (fichier)
-        {
-            const reader = new FileReader();
-            reader.onload = function(e)
-            {
-                temp_image_publication = e.target.result; 
-                image_apercu.src = e.target.result;
-                conteneur_apercu.style.display = "block";
-            }
-            reader.readAsDataURL(fichier);
-        }
+        rechercheTexte = e.target.value.trim();
+        afficherPublication(); 
     });
+}
+
+// Gestion des actions de la pop-up de filtrage
+const btn_filtre = document.getElementById("btn_filtre_burger");
+if (btn_filtre)
+{
+    btn_filtre.addEventListener("click", () => 
+    {
+        const popUp_filtre = document.getElementById("pop_up_filtre");
+        if (popUp_filtre) popUp_filtre.classList.add("active");
+    });
+}
+
+function fermerPopUpFiltre() 
+{
+    const popUp_filtre = document.getElementById("pop_up_filtre");
+    const contenu = popUp_filtre ? popUp_filtre.querySelector(".pop_up_contenu") : null;
+    if (popUp_filtre && contenu) 
+    {
+        contenu.classList.add("en_fermeture");
+        popUp_filtre.classList.add("fond_disparition");
+        setTimeout(() => 
+        {
+            popUp_filtre.classList.remove("active");
+            contenu.classList.remove("en_fermeture");
+            popUp_filtre.classList.remove("fond_disparition");
+        }, 300);
+    }
+}
+
+function appliquerFiltrePopUp(typeFiltre) 
+{
+    filtreActuel = typeFiltre;
+    const btn_filtre = document.getElementById("btn_filtre_burger");
+    if (btn_filtre) 
+    {
+        if (typeFiltre === "mes_publications") 
+        {
+            btn_filtre.style.color = "#3b82f6";
+        }
+        else if (typeFiltre === "aimees") 
+        {
+            btn_filtre.style.color = "#ef4444";
+        }
+        else btn_filtre.style.color = "";
+    }
+    fermerPopUpFiltre();
+    afficherPublication();
 }
 // FONCTION DE GESTION DE DONNEES
 // Fonction qui récupère les données des profils
@@ -471,6 +512,14 @@ function recuperationProfilsExistants()
     }
     return [];
 }
+// Relance l'affichage des publications toutes les 60 secondes
+setInterval(() => 
+{
+    if (utilisateur_connecte) 
+    {
+        afficherPublication();
+    }
+}, 60000); // 60 000 ms -> 60 sec
 
 // Fonction pour enregistrer le nouveau profil utilisateur
 function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
@@ -505,7 +554,7 @@ function recupererPublicationsExistantes()
             nom_auteur: "Tom Dupond",
             email_auteur: "tom.dupond@uca.fr",
             avatar_auteur: "data/utilisateur.png",
-            date: "Il y a 10 min",
+            date: 1781605560000, // Timetemp aux 16/06 à 12h26 (UTC)
             contenu: "Est-ce que quelqu'un aurait les notes du cours de developpement Web de mardi dernier ? J'ai manqué la fin à cause d'un rdv. Merci d'avance !",
             likes: 4,
             liked_by: [], 
@@ -522,4 +571,31 @@ function recupererPublicationsExistantes()
 function sauvegarderPublications() 
 {
     localStorage.setItem("publications_kampus", JSON.stringify(publications));
+}
+// FONCTION QUI GERE LE TEMPS
+// Fonction qui transforme un timestamp en texte relatif (Ex: "Il y a 5 min")
+function formaterDate(timestamp) 
+{
+    const maintenant = Date.now();
+    const delta_secondes = Math.floor((maintenant - timestamp) / 1000);
+
+    if (delta_secondes < 60)    // En dessous de 60 secondes on affiche "à l'instant"
+    {
+        return "À l'instant";
+    }
+
+    const delta_minutes = Math.floor(delta_secondes / 60);
+    if (delta_minutes < 60)     // En dessous de 60 minutes on affiche "il y a X min"
+    {
+        return `Il y a ${delta_minutes} min`;
+    }
+
+    const delta_heures = Math.floor(delta_minutes / 60); // En dessous de 24h on affiche "il y a X h"
+    if (delta_heures < 24) {
+        return `Il y a ${delta_heures} h`;
+    }
+
+    // Au-delà de 24h, on affiche une date classique
+    const dateEcheance = new Date(timestamp);
+    return dateEcheance.toLocaleDateString("fr-FR");
 }

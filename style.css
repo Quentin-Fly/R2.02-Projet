@@ -292,6 +292,13 @@ input[type="checkbox"]
     width: 100%;
     color: #333;
 }
+#btn_deconnexion
+{
+    color: #ef4444; 
+    margin-left: 10px; 
+    border: none; background: transparent; 
+    cursor: pointer;
+}
 /*Effet de survol pour les boutons de la banière*/
 .baniere button:hover
 {
@@ -512,6 +519,109 @@ input[type="checkbox"]
     border-radius: 8px; 
     object-fit: cover;
 }
+.publication_auteur_email 
+{
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: normal;
+}
+
+.publication_image_zone 
+{
+    margin-top: 12px;
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.publication_image_zone img 
+{
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.publication_like_actif 
+{
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+/* Zone Commentaires */
+.zone_commentaires_bloc 
+{
+    display: none;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    width: 100%;
+}
+
+.liste_commentaires_boite 
+{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.commentaire_unitaire 
+{
+    background: #f3f4f6;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.zone_saisie_commentaire 
+{
+    display: flex;
+    gap: 8px;
+}
+
+.input_nouveau_commentaire 
+{
+    flex: 1;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.btn_envoyer_commentaire 
+{
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* Message aucun résultat */
+.publication_recherche_vide 
+{
+    text-align: center;
+    color: #6b7280;
+    padding: 40px 20px;
+}
+
+.publication_recherche_vide i 
+{
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #cbd5e1;
+}
+
+.publication_recherche_vide p 
+{
+    font-weight: 500;
+}
 
 /* STYLES POUR LA POP-UP */
 .pop_up
@@ -600,4 +710,167 @@ input[type="checkbox"]
         opacity : 0;
         transform: scale(0.8);
     }
+}
+/* POP UP DE FILTRE */
+
+/* Options de filtres dans la pop-up */
+.liste_options_filtre 
+{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn_option_filtre 
+{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn_option_filtre:hover 
+{
+    background: #f8fafc;
+    border-color: #94a3b8;
+    transform: translateY(-1px);
+}
+
+.btn_option_filtre i 
+{
+    font-size: 1.1rem;
+}
+
+.btn_annuler_filtre 
+{
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #64748b;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.btn_annuler_filtre:hover 
+{
+    background: #475569;
+}
+
+/* Éléments dynamiques des cartes publications */
+.publication_auteur_email 
+{
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: normal;
+}
+
+.publication_image_zone 
+{
+    margin-top: 12px;
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.publication_image_zone img 
+{
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+
+.publication_like_actif 
+{
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+/* Zone des Commentaires */
+.zone_commentaires_bloc 
+{
+    display: none;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    width: 100%;
+}
+
+.liste_commentaires_boite 
+{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.commentaire_unitaire 
+{
+    background: #f3f4f6;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.zone_saisie_commentaire 
+{
+    display: flex;
+    gap: 8px;
+}
+
+.input_nouveau_commentaire 
+{
+    flex: 1;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.btn_envoyer_commentaire 
+{
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* Message d'absence de résultat */
+.publication_recherche_vide 
+{
+    text-align: center;
+    color: #6b7280;
+    padding: 40px 20px;
+}
+
+.publication_recherche_vide i 
+{
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    color: #cbd5e1;
+}
+
+.publication_recherche_vide p 
+{
+    font-weight: 500;
 }

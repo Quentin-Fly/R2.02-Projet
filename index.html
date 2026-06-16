@@ -117,7 +117,7 @@
                 </div>
                 <div id="menu_lateral_secondaire">
                     <button id="btn_notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
-                    <button id="btn_deconnexion" title="Se déconnecter" style="color: #ef4444; margin-left: 10px; border: none; background: transparent; cursor: pointer;"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    <button id="btn_deconnexion" title="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
             </div>
 
@@ -190,5 +190,27 @@
                 </div> 
             </section> 
         </section> 
+        <!-- POP UP POUR LA SELECTION D'UN FILTRE -->
+        <div id="pop_up_filtre" class="pop_up">
+                <div class="pop_up_contenu">
+                    <h2>Choisir un flltre</h2>
+                    <div class="ligne_foncee" style="margin: 10px auto 20px auto;"></div>
+                    
+                    <div class="liste_options_filtre">
+                        <button onclick="appliquerFiltrePopUp('toutes')" class="btn_option_filtre">
+                            <i class="fa-solid fa-border-all" style="color: #64748b;"></i> Toutes les publications
+                        </button>
+                        <button onclick="appliquerFiltrePopUp('mes_publications')" class="btn_option_filtre">
+                            <i class="fa-solid fa-user" style="color: #3b82f6;"></i> Mes publications uniquement
+                        </button>
+                        <button onclick="appliquerFiltrePopUp('aimees')" class="btn_option_filtre">
+                            <i class="fa-solid fa-heart" style="color: #ef4444;"></i> Publications aimées
+                        </button>
+                    </div>
+
+                    <button onclick="fermerPopUpFiltre()" class="btn_annuler_filtre">Annuler</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
