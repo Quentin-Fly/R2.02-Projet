@@ -30,163 +30,170 @@ const swtConteneur = document.querySelector(".switch");
 const formConnexion = document.getElementById("formulaire_connexion");
 const formInscription = document.getElementById("formulaire_inscription");
 
-btnConnexion.addEventListener("click", () => 
-{
-    formConnexion.classList.add("active");
-    formInscription.classList.remove("active");
+if (btnConnexion) {
+    btnConnexion.addEventListener("click", () => 
+    {
+        formConnexion.classList.add("active");
+        formInscription.classList.remove("active");
 
-    btnConnexion.classList.add("active");
-    btnInscription.classList.remove("active");
+        btnConnexion.classList.add("active");
+        btnInscription.classList.remove("active");
 
-    // On retire la classe pour remettre le switch à sa position initiale (gauche)
-    swtConteneur.classList.remove("signup-active");
-});
+        // On retire la classe pour remettre le switch à sa position initiale (gauche)
+        swtConteneur.classList.remove("signup-active");
+    });
+}
 
-btnInscription.addEventListener("click", () => 
-{
-    formInscription.classList.add("active");
-    formConnexion.classList.remove("active");
+if (btnInscription) {
+    btnInscription.addEventListener("click", () => 
+    {
+        formInscription.classList.add("active");
+        formConnexion.classList.remove("active");
 
-    btnInscription.classList.add("active");
-    btnConnexion.classList.remove("active");
+        btnInscription.classList.add("active");
+        btnConnexion.classList.remove("active");
 
-    // On ajoute la classe pour déplacer le switch vers la droite
-    swtConteneur.classList.add("signup-active");
-});
+        // On ajoute la classe pour déplacer le switch vers la droite
+        swtConteneur.classList.add("signup-active");
+    });
+}
 
 // Fonction qui gère l'aperçu de la photo de profil dans le formulaire d'inscription
 const inputImage = document.getElementById("image");
 const photoProfilApercu = document.getElementById("photo_profil_apercu");
 
-inputImage.addEventListener("change", (e) => 
-{
-    const fichier = e.target.files[0];
-    if (fichier) 
+if (inputImage && photoProfilApercu) {
+    inputImage.addEventListener("change", (e) => 
     {
-        const reader = new FileReader();
-        reader.onload = function(e) 
+        const fichier = e.target.files[0];
+        if (fichier) 
         {
-            photoProfilApercu.src = e.target.result;
+            const reader = new FileReader();
+            reader.onload = function(e) 
+            {
+                photoProfilApercu.src = e.target.result;
+            }
+            reader.readAsDataURL(fichier);
         }
-        reader.readAsDataURL(fichier);
-    }
-});
+    });
+}
 
 // Écouteur d'événement pour la soumission du formulaire d'inscription
-formInscription.addEventListener("submit", (e) => 
-{
-    e.preventDefault();
-
-    const nom = document.getElementById("nom").value.trim();
-    const prenom = document.getElementById("prenom").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const mdp = document.getElementById("mdp_inscription").value;
-    const confirmationMdp = document.getElementById("confirmation_mdp").value;
-    const conditions = document.getElementById("conditions").checked;
-
-    if (!nom || !prenom || !email || !mdp || !confirmationMdp) 
+if (formInscription) {
+    formInscription.addEventListener("submit", (e) => 
     {
-        ouvrirPopUp("erreur", "Veuillez remplir tous les champs.");
-        return;
-    }
+        e.preventDefault();
 
-    if (mdp !== confirmationMdp) 
-    {
-        ouvrirPopUp("erreur", "Les mots de passe ne correspondent pas.");
-        return;
-    }
+        const nom = document.getElementById("nom").value.trim();
+        const prenom = document.getElementById("prenom").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const mdp = document.getElementById("mdp_inscription").value;
+        const confirmationMdp = document.getElementById("confirmation_mdp").value;
+        const conditions = document.getElementById("conditions").checked;
 
-    if (!conditions) 
-    {
-        ouvrirPopUp("erreur", "Vous devez accepter les conditions d'utilisation.");
-        return;
-    }
+        if (!nom || !prenom || !email || !mdp || !confirmationMdp) 
+        {
+            ouvrirPopUp("erreur", "Veuillez remplir tous les champs.");
+            return;
+        }
 
-    const profils_existants = recuperationProfilsExistants();
-    const email_existe = profils_existants.some(profil => profil.email === email);
+        if (mdp !== confirmationMdp) 
+        {
+            ouvrirPopUp("erreur", "Les mots de passe ne correspondent pas.");
+            return;
+        }
 
-    if (email_existe) 
-    {
-        ouvrirPopUp("erreur", "Cette adresse email est déjà utilisée.");
-        return;
-    }
+        if (!conditions) 
+        {
+            ouvrirPopUp("erreur", "Vous devez accepter les conditions d'utilisation.");
+            return;
+        }
 
-    enregistrementDonneeInscription(photoProfilApercu.src, nom, prenom, email, mdp);
-    // On cible le texte à l'intérieur du pop-up succès pour le modifier
-    const texte_succes = document.querySelector(".pop_up.succes .pop_up_contenu p");
-    if (texte_succes) 
-    {
-        texte_succes.textContent = "Inscription réussie !";
-    }
-    afficherPublication();
-    ouvrirPopUp("succes");  
+        const profils_existants = recuperationProfilsExistants();
+        const email_existe = profils_existants.some(profil => profil.email === email);
 
-    // On redirige vers la page de connexion
-    formConnexion.classList.add("active");
-    formInscription.classList.remove('active');
+        if (email_existe) 
+        {
+            ouvrirPopUp("erreur", "Cette adresse email est déjà utilisée.");
+            return;
+        }
 
-    btnConnexion.classList.add("active");
-    btnInscription.classList.remove("active");
+        // Sauvegarde fonctionnelle
+        enregistrementDonneeInscription(photoProfilApercu ? photoProfilApercu.src : "data/utilisateur.png", nom, prenom, email, mdp);
+        
+        // On cible le texte à l'intérieur du pop-up succès pour le modifier
+        const texte_succes = document.querySelector(".pop_up.succes .pop_up_contenu p");
+        if (texte_succes) 
+        {
+            texte_succes.textContent = "Inscription réussie !";
+        }
+        ouvrirPopUp("succes");  
 
-    // On remet le switch côté connexion
-    swtConteneur.classList.remove("signup-active");
+        // On redirige vers la page de connexion
+        formConnexion.classList.add("active");
+        formInscription.classList.remove('active');
 
-    // On nettoye le formulaire de connexions
-    formInscription.reset();
-    photoProfilApercu.src = "data/utilisateur.png"; 
-});
+        btnConnexion.classList.add("active");
+        btnInscription.classList.remove("active");
+
+        // On remet le switch côté connexion
+        swtConteneur.classList.remove("signup-active");
+
+        // On nettoie le formulaire
+        formInscription.reset();
+        if (photoProfilApercu) photoProfilApercu.src = "data/utilisateur.png"; 
+    });
+}
 
 // Gestion de la soumission du formulaire de connexion
-formConnexion.addEventListener("submit", (e) => 
-{
-    e.preventDefault();
-    const email_input = document.getElementById("email_connexion").value.trim();
-    const mdp_input = document.getElementById("mdp_connexion").value;
-
-    // Récupération des profils pour vérifier les identifiants
-    const profils = recuperationProfilsExistants();
-    const utilisateur_trouve = profils.find(p => p.email === email_input && p.mdp === mdp_input);
-
-    if (utilisateur_trouve) 
+if (formConnexion) {
+    formConnexion.addEventListener("submit", (e) => 
     {
-        // Connexion avec le compte trouvé dans le localStorage
-        utilisateur_connecte = 
+        e.preventDefault();
+        const email_input = document.getElementById("email_connexion").value.trim();
+        const mdp_input = document.getElementById("mdp_connexion").value;
+
+        // Récupération des profils pour vérifier les identifiants
+        const profils = recuperationProfilsExistants();
+        const utilisateur_trouve = profils.find(p => p.email === email_input && p.mdp === mdp_input);
+
+        if (utilisateur_trouve) 
         {
-            nom: utilisateurTrouve.prenom + " " + utilisateurTrouve.nom,
-            email: utilisateurTrouve.email,
-            image: utilisateurTrouve.image || "data/utilisateur.png"
-        };
-    } 
-    else 
-    {
-        // Compte de secours si le localStorage est vide
-        utilisateur_connecte = 
+            // Connexion avec le compte trouvé dans le localStorage
+            utilisateur_connecte = 
+            {
+                nom: utilisateur_trouve.prenom + " " + utilisateur_trouve.nom,
+                email: utilisateur_trouve.email,
+                image: utilisateur_trouve.image || "data/utilisateur.png"
+            };
+        } 
+        else 
         {
-            nom: "Inconnue",
-            email: email_input,
-            image: "data/utilisateur.png"
-        };
-    }
+            // Si aucun utilisateur n'est trouvé dans le localStorage, on bloque au lieu de créer un faux compte !
+            ouvrirPopUp("erreur", "Identifiants incorrects ou compte supprimé.");
+            return;
+        }
 
-    // Bascule des sections d'affichage
-    document.getElementById("page_accueil").style.display = "none";
-    document.getElementById("page_fil_actualite").style.display = "flex"; 
+        // Bascule des sections d'affichage
+        document.getElementById("page_accueil").style.display = "none";
+        document.getElementById("page_fil_actualite").style.display = "block"; 
 
-    // On cible directement les classes
-    const avatar_profil = document.querySelector(".profil_carte img");
-    const nom_profil = document.querySelector(".profil_carte .nom_utilisateur");
+        // SÉLECTEURS MODIFIÉS POUR S'ADAPTER À TON HTML UNIQUE :
+        const avatar_profil = document.querySelector(".gauche img.profil_carte");
+        const nom_profil = document.getElementById("nom_utilisateur_menu");
 
-    if (avatar_profil) 
-    {
-        avatar_profil.src = utilisateur_connecte.image;
-    }
-    if (nom_profil) 
-    {
-        nom_profil.textContent = utilisateur_connecte.nom;
-    }
+        if (avatar_profil) 
+        {
+            avatar_profil.src = utilisateur_connecte.image;
+        }
+        if (nom_profil) 
+        {
+            nom_profil.textContent = utilisateur_connecte.nom;
+        }
 
-    afficherPublication();
-});
+        afficherPublication();
+    });
+}
 
 // Déconnexion
 const btnDeconnexion = document.getElementById("btn_deconnexion");
@@ -203,8 +210,10 @@ if (btnDeconnexion)
 // Fonction globale d'affichage dynamique des publications
 function afficherPublication() {
     const zone_publications = document.getElementById("zone_publications");
-    if (!zone_publications) return;
-
+    if (!zone_publications) 
+    {
+        return;
+    }
     zone_publications.innerHTML = ''; // On nettoie le conteneur
 
     publications.forEach(pub => 
@@ -212,14 +221,12 @@ function afficherPublication() {
         const carte = document.createElement('div');
         carte.className = 'carte_publication';
 
-        // Vérification d'appartenance pour l'affichage de la poubelle de suppression
         const estMonMessage = utilisateur_connecte && pub.email_auteur === utilisateur_connecte.email;
         const boutonSupprimer = estMonMessage 
-            ? `<button onclick="supprimerPublication(${pub.id}) id="btn_suppr" title="Supprimer ma publication"><i class="fa-solid fa-trash"></i></button>`
+            ? `<button onclick="supprimerPublication(${pub.id})" id="btn_suppr" title="Supprimer ma publication"><i class="fa-solid fa-trash"></i></button>`
             : '';
 
-        // Changement de style dynamique sur le bouton J'aime s'il est déjà cliqué
-        const dejaLike = utilisateurConnecte && pub.liked_by.includes(utilisateurConnecte.email);
+        const dejaLike = utilisateur_connecte && pub.liked_by.includes(utilisateur_connecte.email);
         const styleLike = dejaLike ? 'color: #3b82f6; font-weight: bold;' : '';
 
         carte.innerHTML = `
@@ -268,16 +275,16 @@ if (form_nouvelle_publication)
     {
         e.preventDefault();
         
-        if(!utilisateurConnecte) return;
+        if(!utilisateur_connecte) return;
 
         const texte = document.getElementById('publication_texte').value.trim();
         if(texte === '') return;
 
         const nouvellePub = {
             id: Date.now(), 
-            nom_auteur: utilisateurConnecte.nom,
-            email_auteur: utilisateurConnecte.email,
-            avatar_auteur: utilisateurConnecte.image,
+            nom_auteur: ...utilisateur_connecte.nom,
+            email_auteur: utilisateur_connecte.email,
+            avatar_auteur: utilisateur_connecte.image,
             date: "À l'instant",
             contenu: texte,
             likes: 0,
@@ -295,9 +302,9 @@ if (form_nouvelle_publication)
 function likerPublication(id) 
 {
     const pub = publications.find(p => p.id === id);
-    if (!pub || !utilisateurConnecte) return;
+    if (!pub || !utilisateur_connecte) return;
 
-    const mon_email = utilisateurConnecte.email;
+    const mon_email = utilisateur_connecte.email;
 
     if (pub.liked_by.includes(mon_email)) 
     {
@@ -332,16 +339,16 @@ function ajouterCommentaire(id)
     if (texte === '') return;
 
     const pub = publications.find(p => p.id === id);
-    if (!pub || !utilisateurConnecte) return;
+    if (!pub || !utilisateur_connecte) return;
 
     pub.commentaires.push({
-        auteur: utilisateurConnecte.nom,
+        auteur: utilisateur_connecte.nom,
         texte: texte
     });
 
     input.value = '';
     afficherPublication();
-    document.getElementById(`zone-commentaires-${id}`).style.display = 'block'; // Reste déployé après envoi
+    document.getElementById(`zone-commentaires-${id}`).style.display = 'block'; 
 }
 
 // Suppression d'un message si l'ID correspond
@@ -349,16 +356,13 @@ function supprimerPublication(id)
 {
     publications = publications.filter(pub => pub.id !== id);
 
-    // On cible le texte à l'intérieur du pop-up succès pour le modifier
-    const texte_succes = document.querySelectorAll(".pop_up_succes .pop_up_contenu p");
+    const texte_succes = document.querySelector(".pop_up.succes .pop_up_contenu p");
     if (texte_succes)
     {
         texte_succes.textContent = "Publication supprimée avec succès !";
     }
     afficherPublication();
     ouvrirPopUp("succes");
-    
-    document.getElementById("message_succes" || "succes").querySelector("p").textContent = "Publication supprimée !";
 }
 
 // Simulation du système de partage via l'affichage d'une alerte
@@ -377,7 +381,8 @@ function ouvrirPopUp(type, message = "")
 
     if (type === "erreur" && message) 
     {
-        document.getElementById("message_erreur").textContent = message;
+        const msg_err = document.getElementById("message_erreur");
+        if (msg_err) msg_err.textContent = message;
     }
 
     boite_pop_up.classList.add("active");
@@ -391,13 +396,13 @@ function fermerPopUp(type)
     const contenu_pop_up = boite_pop_up.querySelector(".pop_up_contenu");
 
     boite_pop_up.classList.add("fond_disparition"); 
-    contenu_pop_up.classList.add("en_fermeture");   
+    if (contenu_pop_up) contenu_pop_up.classList.add("en_fermeture");   
     
     setTimeout(() => 
     {
         boite_pop_up.classList.remove("active");
         boite_pop_up.classList.remove("fond_disparition");
-        contenu_pop_up.classList.remove("en_fermeture");
+        if (contenu_pop_up) contenu_pop_up.classList.remove("en_fermeture");
     }, 300);
 }
 
