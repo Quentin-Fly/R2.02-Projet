@@ -4,23 +4,7 @@
 let utilisateur_connecte = null;
 
 // Création d'une base de données de test pour simuler des publications
-let publications = [
-    {
-        id: 1,
-        nom_auteur: "Tom Dupond",
-        email_auteur: "tom.dupond@uca.fr",
-        avatar_auteur: "data/utilisateur.png",
-        date: "Il y a 10 min",
-        contenu: "Est-ce que quelqu'un aurait les notes du cours de developpement Web de mardi dernier ? J'ai manqué la fin à cause d'un rdv. Merci d'avance !",
-        likes: 4,
-        liked_by: [], // Stocke les emails (clef) des gens qui ont laissé un like
-        commentaires: [
-            {
-                auteur: "Emma Bertrand", texte: "Je te les envoie en MP"
-            }
-        ]
-    }
-];
+let publications = recupererPublicationsExistantes();
 
 // FUNCTION QUI GERE L'AFFICHAGE DES FORMULAIRE DE CONNEXION ET D'INSCRIPTION AVEC LE PHOTO_PROFIL_CONTENEUR SWITCH
 const btnConnexion = document.getElementById("switch_connexion");
@@ -30,7 +14,8 @@ const swtConteneur = document.querySelector(".switch");
 const formConnexion = document.getElementById("formulaire_connexion");
 const formInscription = document.getElementById("formulaire_inscription");
 
-if (btnConnexion) {
+if (btnConnexion) 
+{
     btnConnexion.addEventListener("click", () => 
     {
         formConnexion.classList.add("active");
@@ -44,7 +29,8 @@ if (btnConnexion) {
     });
 }
 
-if (btnInscription) {
+if (btnInscription) 
+{
     btnInscription.addEventListener("click", () => 
     {
         formInscription.classList.add("active");
@@ -62,7 +48,8 @@ if (btnInscription) {
 const inputImage = document.getElementById("image");
 const photoProfilApercu = document.getElementById("photo_profil_apercu");
 
-if (inputImage && photoProfilApercu) {
+if (inputImage && photoProfilApercu) 
+{
     inputImage.addEventListener("change", (e) => 
     {
         const fichier = e.target.files[0];
@@ -79,7 +66,8 @@ if (inputImage && photoProfilApercu) {
 }
 
 // Écouteur d'événement pour la soumission du formulaire d'inscription
-if (formInscription) {
+if (formInscription) 
+{
     formInscription.addEventListener("submit", (e) => 
     {
         e.preventDefault();
@@ -146,7 +134,8 @@ if (formInscription) {
 }
 
 // Gestion de la soumission du formulaire de connexion
-if (formConnexion) {
+if (formConnexion) 
+{
     formConnexion.addEventListener("submit", (e) => 
     {
         e.preventDefault();
@@ -178,8 +167,7 @@ if (formConnexion) {
         document.getElementById("page_accueil").style.display = "none";
         document.getElementById("page_fil_actualite").style.display = "block"; 
 
-        // SÉLECTEURS MODIFIÉS POUR S'ADAPTER À TON HTML UNIQUE :
-        const avatar_profil = document.querySelector(".gauche img.profil_carte");
+        const avatar_profil = document.querySelector("#fils_actualite .gauche .photo_profil");
         const nom_profil = document.getElementById("nom_utilisateur_menu");
 
         if (avatar_profil) 
@@ -294,7 +282,10 @@ if (form_nouvelle_publication)
 
         publications.unshift(nouvellePub);                      
         document.getElementById('publication_texte').value = ''; 
+        // On sauvagarde la publication et affichage
+        sauvegarderPublications();
         afficherPublication();
+        
     });
 }
 
@@ -347,6 +338,8 @@ function ajouterCommentaire(id)
     });
 
     input.value = '';
+    // On sauvagarde la publication et affiche
+    sauvegarderPublications();
     afficherPublication();
     document.getElementById(`zone-commentaires-${id}`).style.display = 'block'; 
 }
@@ -361,6 +354,8 @@ function supprimerPublication(id)
     {
         texte_succes.textContent = "Publication supprimée avec succès !";
     }
+    // On sauvegarde et on affiche
+    sauvegarderPublications();
     afficherPublication();
     ouvrirPopUp("succes");
 }
@@ -433,4 +428,38 @@ function enregistrementDonneeInscription(image, nom, prenom, email, mdp)
 
     profils.push(nouveau_profil);
     localStorage.setItem("profils", JSON.stringify(profils));
+}
+// Récupère les publications du localStorage ou charge la publication par défaut
+function recupererPublicationsExistantes() 
+{
+    const localPubs = localStorage.getItem("publications_kampus");
+    if (localPubs) 
+    {
+        return JSON.parse(localPubs);
+    }
+    
+    // Si la base locale est vide, on retourne la publication par défaut
+    return [
+        {
+            id: 1,
+            nom_auteur: "Tom Dupond",
+            email_auteur: "tom.dupond@uca.fr",
+            avatar_auteur: "data/utilisateur.png",
+            date: "Il y a 10 min",
+            contenu: "Est-ce que quelqu'un aurait les notes du cours de developpement Web de mardi dernier ? J'ai manqué la fin à cause d'un rdv. Merci d'avance !",
+            likes: 4,
+            liked_by: [], 
+            commentaires: [
+                {
+                    auteur: "Emma Bertrand", texte: "Je te les envoie en MP"
+                }
+            ]
+        }
+    ];
+}
+
+// Sauvegarde le tableau des publications dans le localStorage
+function sauvegarderPublications() 
+{
+    localStorage.setItem("publications_kampus", JSON.stringify(publications));
 }
