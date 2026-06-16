@@ -374,9 +374,17 @@ function likerPublication(id)
 function basculerZoneCommentaires(id) 
 {
     const zone = document.getElementById(`zone-commentaires-${id}`);
-    if (zone) 
+    if (!zone) return;
+
+    const styleReel = window.getComputedStyle(zone).display;
+
+    if (styleReel === "none") 
     {
-        zone.style.display = zone.style.display === 'none' ? 'block' : 'none';
+        zone.style.display = "block";
+    } 
+    else 
+    {
+        zone.style.display = "none";
     }
 }
 
