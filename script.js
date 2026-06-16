@@ -230,6 +230,12 @@ function afficherPublication() {
             <div class="publication_contenu">
                 ${pub.contenu}
             </div>
+
+            ${pub.image_contenu ? `
+                <div class="publication_image_zone" style="margin-top: 12px; width: 100%; max-height: 400px; overflow: hidden; border-radius: 8px;">
+                    <img src="${pub.image_contenu}" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+                </div>
+            ` : ''}
             
             <div class="publication_actions">
                 <button onclick="likerPublication(${pub.id})" style="${styleLike}"><i class="fa-solid fa-thumbs-up"></i> J'aime (${pub.likes})</button>
@@ -261,20 +267,31 @@ if (form_nouvelle_publication)
 {
     form_nouvelle_publication.addEventListener('submit', (e) => 
     {
-        e.preventDefault();
-        
-        if(!utilisateur_connecte) return;
+        e.preventDefault(); 
+
+        if(!utilisateur_connecte) 
+        {
+            return;
+        }
 
         const texte = document.getElementById('publication_texte').value.trim();
-        if(texte === '') return;
+        
+        // On utilise la bonne variable image définie à la fin du script
+        if(texte === '' && (!temp_image_publication || temp_image_publication === '')) 
+        {
+            ouvrirPopUp("erreur", "Votre publication ne peut pas être vide.");
+            return;
+        }
 
         const nouvellePub = {
             id: Date.now(), 
             nom_auteur: utilisateur_connecte.nom,
             email_auteur: utilisateur_connecte.email,
+            // Suppression de cyber_image_security qui n'est pas défini pour éviter un crash
             avatar_auteur: utilisateur_connecte.image,
             date: "À l'instant",
             contenu: texte,
+            image_contenu: temp_image_publication || "", // Utilisation de la bonne variable
             likes: 0,
             liked_by: [],
             commentaires: []
@@ -282,10 +299,24 @@ if (form_nouvelle_publication)
 
         publications.unshift(nouvellePub);                      
         document.getElementById('publication_texte').value = ''; 
-        // On sauvagarde la publication et affichage
-        sauvegarderPublications();
-        afficherPublication();
         
+        // Nettoyage de l'aperçu après publication avec les bonnes variables globales
+        temp_image_publication = "";
+        if (image_apercu)
+        {
+            image_apercu.src = "";
+        } 
+        if (conteneur_apercu)
+        {
+            conteneur_apercu.style.display = "none";
+        }
+        if (input_image) 
+        {
+            input_image.value = "";
+        }
+        
+        sauvegarderPublications(); 
+        afficherPublication();
     });
 }
 
@@ -400,7 +431,36 @@ function fermerPopUp(type)
         if (contenu_pop_up) contenu_pop_up.classList.remove("en_fermeture");
     }, 300);
 }
+// PARTIE GESTION APERCU IMAGE PUBLICATION
+const btn_ajouter_image = document.getElementById("btn_ajouter_image");
+const input_image = document.getElementById("publication_image_input");
+const conteneur_apercu = document.getElementById("conteneur_apercu_image");
+const image_apercu = document.getElementById("apercu_image_publication");
 
+// Variable temporaire pour stocker l'image
+let temp_image_publication
+
+if (btn_ajouter_image && input_image)
+{
+    btn_ajouter_image.addEventListener("click", () => input_image.click());
+
+    input_image.addEventListener("change", (e) => 
+    {
+        const fichier = e.target.files[0];
+        if (fichier)
+        {
+            const reader = new FileReader();
+            reader.onload = function(e)
+            {
+                temp_image_publication = e.target.result; 
+                image_apercu.src = e.target.result;
+                conteneur_apercu.style.display = "block";
+            }
+            reader.readAsDataURL(fichier);
+        }
+    });
+}
+// FONCTION DE GESTION DE DONNEES
 // Fonction qui récupère les données des profils
 function recuperationProfilsExistants()
 {

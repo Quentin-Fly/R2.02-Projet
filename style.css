@@ -498,6 +498,20 @@ input[type="checkbox"]
     border: none; 
     cursor: pointer
 }
+/* Style de l'arperçu de l'image */
+#conteneur_apercu_image
+{
+    display: none; 
+    position: relative; 
+    margin-top: 10px; 
+    max-width: 100%
+}
+#apercu_image_publication
+{
+    max-height: 200px; 
+    border-radius: 8px; 
+    object-fit: cover;
+}
 
 /* STYLES POUR LA POP-UP */
 .pop_up

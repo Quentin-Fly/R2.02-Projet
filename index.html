@@ -150,12 +150,16 @@
 
                     <div class="carte_publication">
                         <h2>Créer une nouvelle publication</h2>
-                        <div class="ligne_claire">  </div>
-                        <!-- Remplacement par une balise form indispensable pour le script_2.js -->
-                        <form id="form_nouvelle_publication" class="publication_formulaire" style="display: flex;">
+                        <div class="ligne_claire"></div>
+                        <form id="form_nouvelle_publication" class="publication_formulaire" style="display: flex; flex-direction: column; gap: 12px;">
                             <textarea placeholder="Exprimez-vous..." id="publication_texte"></textarea>
-                            <div id="apercu_image"></div>
+                            
+                            <div id="conteneur_apercu_image" style="display: none; position: relative; margin-top: 10px; max-width: 100%;">
+                                <img id="apercu_image_publication" src="" alt="Aperçu" style="max-height: 200px; border-radius: 8px; object-fit: cover;">
+                            </div>
+
                             <div class="publication_actions">
+                                <input type="file" id="publication_image_input" accept="image/*" style="display: none;">
                                 <button type="button" id="btn_ajouter_image"><i class="fa-solid fa-image"></i> Ajouter une image</button>
                                 <button type="submit" id="btn_publier"><i class="fa-solid fa-paper-plane"></i> Publier</button>
                             </div>
@@ -163,7 +167,6 @@
                     </div>
 
                     <div id="zone_publications" style="width: 100%; display: flex; flex-direction: column; gap: 25px; align-items: center;">
-                        <!-- La publication modèle ci-dessous sera gérée par le JS -->
                         <div class="carte_publication">
                             <div class="entete_publication">
                                 <img src="data/utilisateur.png" alt="Votre photo de profil" class="publication_photo_profil" class="pdp_utilisateur">
