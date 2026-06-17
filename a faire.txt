@@ -1,3 +1,0 @@
-- Terminer le pop-up d'inscription, réussir à le faire s'apparètre
-- Résoudre le bouton fermer quand il y a un pop up d'erreur
-- Faire le système de connexions
