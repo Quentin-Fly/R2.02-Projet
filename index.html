@@ -122,9 +122,7 @@
             </div>
 
             <section id="fils_actualite">
-                
-                <section id="fils_actualite">
-                
+                                
                 <div class="gauche">
                     <div class="profil_carte">
                         <div class="photo_profil_conteneur">
@@ -165,8 +163,8 @@
                             </div>
                         </form>
                     </div>
-
-                    <div id="zone_publications" style="width: 100%; display: flex; flex-direction: column; gap: 25px; align-items: center;">
+                    <!-- Exemple de publication (non implémenter dans le code) -->
+                    <div id="zone_publications">
                         <div class="carte_publication">
                             <div class="entete_publication">
                                 <img src="data/utilisateur.png" alt="Votre photo de profil" class="publication_photo_profil" class="pdp_utilisateur">
@@ -190,7 +188,7 @@
                 </div> 
             </section> 
         </section> 
-        <!-- POP UP POUR LA SELECTION D'UN FILTRE -->
+        <!-- Pop up pour la selection d'un filtre -->
         <div id="pop_up_filtre" class="pop_up">
                 <div class="pop_up_contenu">
                     <h2>Choisir un flltre</h2>
@@ -212,5 +210,19 @@
                 </div>
             </div>
         </div>
+        <!-- Section du profil (cachée par défaut) -->
+        <section id="page_profil" style="display:none;">
+            <div class="baniere">
+                <p>Kampus</p>
+                <div class="menu_lateral_secondaire">
+                    <button id="btn_notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
+                    <button id="btn_deconnexion" title="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
+            </div>
+
+            <section id="profil">
+
+            </section>
+        </section>
     </body>
 </html>

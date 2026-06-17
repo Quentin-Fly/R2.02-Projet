@@ -4,6 +4,14 @@
 let filtreActuel = "toutes"; 
 let rechercheTexte = "";
 
+// Variables globale pour la gestion des imagtes
+
+let temp_image_publication = "";
+const input_image = document.getElementById("publication_image_input");
+const conteneur_apercu = document.getElementById("conteneur_apercu_image");
+const image_apercu = document.getElementById("apercu_image_publication");
+const btn_ajouter_image = document.getElementById("btn_ajouter_image");
+
 // Stockage de l'utilisateur connecté (null s'il est déconnecté)
 let utilisateur_connecte = null;
 
@@ -290,8 +298,33 @@ function afficherPublication() {
         zone_publications.appendChild(carte);       
     });
 }      
+// Déclencher le clic sur l'input quand on clique sur le bouton "Image"
+if (btn_ajouter_image && input_image) {
+    btn_ajouter_image.addEventListener("click", () => {
+        input_image.click();
+    });
+}
+
+// Lire l'image sélectionnée et l'afficher en aperçu
+if (input_image) {
+    input_image.addEventListener("change", (e) => {
+        const fichier = e.target.files[0];
+        if (fichier) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                temp_image_publication = e.target.result; // Stocke l'image en Base64
+                if (image_apercu && conteneur_apercu) {
+                    image_apercu.src = e.target.result;
+                    conteneur_apercu.style.display = "block"; // Affiche l'aperçu
+                }
+            }
+            reader.readAsDataURL(fichier);
+        }
+    });
+}
 // Écouteur d'événement de création d'une nouvelle publication
 const form_nouvelle_publication = document.getElementById("form_nouvelle_publication");
+
 if (form_nouvelle_publication) 
 {
     form_nouvelle_publication.addEventListener('submit', (e) => 
@@ -436,7 +469,7 @@ function partagerPublication(id)
     alert(`Lien de partage généré pour la publication de ${pub.nom_auteur} !`);
 }
 
-// FONCTION POUR OUVRIR LA POP UP
+// FONCTION POUR OUVRIR/FERMER LA POP UP
 function ouvrirPopUp(type, message = "") 
 {
     const boite_pop_up = document.querySelector(`.pop_up.${type}`);
@@ -449,6 +482,14 @@ function ouvrirPopUp(type, message = "")
     }
 
     boite_pop_up.classList.add("active");
+}
+function fermerPopUp(type) 
+{
+    const boite_pop_up = document.querySelector(`.pop_up.${type}`);
+    if (boite_pop_up) 
+    {
+        boite_pop_up.classList.remove("active");
+    }
 }
 // GESTION DES FILTRES ET RECHERCHE
 // Écouteur sur la barre de recherche
