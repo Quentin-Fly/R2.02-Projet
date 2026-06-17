@@ -5,39 +5,31 @@
         <link rel="stylesheet" href="style.css">
         <script src="script.js" defer></script>
         <meta charset="utf-8"/>
-        <!-- Polices -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-        <!-- Icônes -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
-        <!-- Page d'accueil -->
         <section id="page_accueil"> 
             <div class = "gauche">
                 <h1>Kampus</h1>
                 <div class="ligne_foncee"></div>
-                <p>Le réseau social pour tous les étudiants. Echanger, s’entraider et partager sa vie universitaire.</p>
+                <p>Le réseau social pour tous les étudiants. Échanger, s’entraider et partager sa vie universitaire.</p>
             </div>
             <div class = "droite">
                 <div class="formulaire_conteneur">
-                    <!-- Bouton switch (connexion/inscription)  => Connexion par défaut-->
                     <div class = "switch">
-                        <!-- Slider pour l'effet visuel du switch -->
                         <div class="slider"></div>
-
                         <button class="button_defaut active" id="switch_connexion">Connexion</button>
                         <button class="button_defaut" id="switch_inscription">Inscription</button>
                     </div>
                     <div class="ligne_claire"></div>
-                    <!-- Formulaire d'inscription -->
                     <form id="formulaire_inscription">
                         <label> Photo de profil :</label>
                         <div class="photo_profil_conteneur">
                             <div class="photo_profil_prevu">
                                 <img src="data/utilisateur.png" id="photo_profil_apercu" alt="Photo de profil">
-                            
                                 <label for="image" class="overlay_edition">
                                     <i class="fa-solid fa-pen"></i>
                                 </label>
@@ -70,7 +62,6 @@
                         </div>
                         <button class="button_defaut" type="submit" id="btn_inscription">S'inscrire</button>
                     </form>
-                    <!-- Formulaire de connexion -->
                     <form id="formulaire_connexion" class="active">
                         <label for = "email_connexion">Email :</label>
                         <input type = "email" id="email_connexion" name="email_connexion" class="champs" placeholder="pierre.dupont@exemple.com">
@@ -83,146 +74,137 @@
                 </div>
             </div>
         </section>
-        <!-- Pop-up d'erreur d'inscription -->
+
         <div class="pop_up erreur">
             <div class="pop_up_contenu">
                 <h2>Erreur</h2>
                 <div class="ligne_claire"></div>
-
                 <p id="message_erreur">Message d'erreur</p>
-
                 <button onclick="fermerPopUp('erreur')" id="btn_fermer_erreur" class="button_defaut">Fermer</button>
             </div>
         </div>
-        <!-- Pop-up de succès inscription -->
         <div class="pop_up succes">
             <div class="pop_up_contenu">
                 <h2>Succès</h2>
                 <div class="ligne_claire"></div>
-
                 <p>Inscription réussie !</p>
-
                 <button onclick="fermerPopUp('succes')" id="btn_fermer_succes" class="button_defaut">Fermer</button>
             </div>
         </div>
-        <!-- Section du fil d'actualité (cachée par défaut) -->
+
+        <div class="pop_up" id="pop_up_filtre">
+            <div class="pop_up_contenu">
+                <h2>Filtres d'affichage</h2>
+                <div class="ligne_claire"></div>
+                <div class="options_filtre">
+                    <button onclick="appliquerFiltre('toutes')" class="btn_filtre_action active" id="filtre_toutes">Toutes les publications</button>
+                    <button onclick="appliquerFiltre('mes_publications')" class="btn_filtre_action" id="filtre_mes_pub">Mes publications</button>
+                    <button onclick="appliquerFiltre('aimees')" class="btn_filtre_action" id="filtre_aimees">Publications aimées</button>
+                </div>
+                <button onclick="fermerPopUpFiltre()" class="button_defaut">Fermer</button>
+            </div>
+        </div>
+
         <section id="page_fil_actualite" style="display:none;"> 
-            
             <div class="baniere">
                 <p>Kampus</p>
                 <div class="contenaire_recherche">
                     <input type="text" placeholder="Rechercher une publication" id="barre_recherche">
-                    <button id="btn_recherche" title="lancer la recherche"><i class="fa-solid fa-magnifying-glass"></i> </button>
+                    <button id="btn_recherche" title="Lancer la recherche"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <button id="btn_filtre_burger" title="Choisir un filtre"><i class="fa-solid fa-bars"></i></button>
                 </div>
                 <div id="menu_lateral_secondaire">
-                    <button id="btn_notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
                     <button id="btn_deconnexion" title="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
             </div>
 
-            <section id="fils_actualite">
-                                
-                <div class="gauche">
-                    <div class="profil_carte">
-                        <div class="photo_profil_conteneur">
-                            <img src="data/utilisateur.png" class="photo_profil" alt="Photo de profil">
+            <div id="conteneur_principal_reseau">
+                
+                <section id="vue_fils_actualite" class="page_interne_reseau">
+                    <div class="gauche">
+                        <div class="profil_carte">
+                            <div class="photo_profil_conteneur">
+                                <img src="data/utilisateur.png" class="photo_profil globale_avatar" alt="Photo de profil">
+                            </div>
+                            <div class="nom_utilisateur globale_nom">Prenom Nom</div>
                         </div>
-                        <div id="nom_utilisateur_menu" class="nom_utilisateur">Prenom Nom</div>
+                        <div class="ligne_foncee"></div>
+                        <div class="menu_lateral_principal">
+                            <button class="btn_menu active link_vers_accueil"><i class="fa-solid fa-newspaper"></i> Fil d'actualité</button>
+                            <button class="btn_menu link_vers_profil"><i class="fa-solid fa-user"></i> Mon Profil</button>
+                            <button class="btn_menu link_vers_abonnements"><i class="fa-solid fa-user-group"></i> Abonnements</button>
+                        </div>
+                        <div class="ligne_foncee"></div>
                     </div>
-
-                    <div class="ligne_foncee"></div>
-                    <div id="menu_lateral_principal">
-                        <button class="btn_menu"><i class="fa-solid fa-house"></i> Abonnements</button>
-                        <button class="btn_menu"><i class="fa-solid fa-user-group"></i> Profils</button>
-                        <button class="btn_menu"><i class="fa-solid fa-message"></i> Messages</button>
-                    </div>
-                    <div class="ligne_foncee"></div>
-                    <div id="menu_lateral_secondaire_icones">
-                        <button class="btn_icon" id="btn_themes" style="border: none; background: transparent; color: #ccc; cursor: pointer;"><i class="fa-solid fa-sun"></i></button>
-                    </div>
-                </div>
-
-                <div class="droite">
-                    <h1>Fil d'actualité</h1>
-
-                    <div class="carte_publication">
-                        <h2>Créer une nouvelle publication</h2>
-                        <div class="ligne_claire"></div>
-                        <form id="form_nouvelle_publication" class="publication_formulaire" style="display: flex; flex-direction: column; gap: 12px;">
-                            <textarea placeholder="Exprimez-vous..." id="publication_texte"></textarea>
-                            
-                            <div id="conteneur_apercu_image" style="display: none; position: relative; margin-top: 10px; max-width: 100%;">
-                                <img id="apercu_image_publication" src="" alt="Aperçu" style="max-height: 200px; border-radius: 8px; object-fit: cover;">
-                            </div>
-
-                            <div class="publication_actions">
-                                <input type="file" id="publication_image_input" accept="image/*" style="display: none;">
-                                <button type="button" id="btn_ajouter_image"><i class="fa-solid fa-image"></i> Ajouter une image</button>
-                                <button type="submit" id="btn_publier"><i class="fa-solid fa-paper-plane"></i> Publier</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Exemple de publication (non implémenter dans le code) -->
-                    <div id="zone_publications">
+                    <div class="droite">
+                        <h1>Fil d'actualité</h1>
                         <div class="carte_publication">
-                            <div class="entete_publication">
-                                <img src="data/utilisateur.png" alt="Votre photo de profil" class="publication_photo_profil" class="pdp_utilisateur">
-                                <div class="publication_auteur">Prenom Nom</div>
-                                <div class="publication_date">Il y a 2 heures</div>
-                            </div>
+                            <h2>Créer une nouvelle publication</h2>
                             <div class="ligne_claire"></div>
-                            <div class="publication_contenu">
-                                Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. 
-                                Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. 
-                                Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-                            </div>
-                        
-                            <div class="publication_actions">
-                                <button><i class="fa-solid fa-thumbs-up"></i> J'aime</button>
-                                <button><i class="fa-solid fa-comment"></i> Commenter</button>
-                                <button><i class="fa-solid fa-share"></i> Partager</button>
-                            </div>
+                            <form id="form_nouvelle_publication">
+                                <textarea id="publication_texte" placeholder="Quoi de neuf aujourd'hui ?"></textarea>
+                                <div id="conteneur_apercu_image">
+                                    <img src="" id="apercu_image_publication">
+                                </div>
+                                <div id="conteneur_pub">
+                                    <button type="button" id="btn_ajouter_image" class="button_defaut"><i class="fa-solid fa-image"></i> Image</button>
+                                    <input type="file" id="publication_image_input" accept="image/*" style="display:none;">
+                                    <button type="submit" class="button_defaut"><i class="fa-solid fa-paper-plane"></i>Publier</button>
+                                </div>
+                            </form>
                         </div>
+                        <div id="zone_publications"></div>
                     </div>
-                </div> 
-            </section> 
-        </section> 
-        <!-- Pop up pour la selection d'un filtre -->
-        <div id="pop_up_filtre" class="pop_up">
-                <div class="pop_up_contenu">
-                    <h2>Choisir un flltre</h2>
-                    <div class="ligne_claire"></div>
-                    
-                    <div class="liste_options_filtre">
-                        <button onclick="appliquerFiltrePopUp('toutes')" class="btn_option_filtre">
-                            <i class="fa-solid fa-border-all" style="color: #64748b;"></i> Toutes les publications
-                        </button>
-                        <button onclick="appliquerFiltrePopUp('mes_publications')" class="btn_option_filtre">
-                            <i class="fa-solid fa-user" style="color: #3b82f6;"></i> Mes publications uniquement
-                        </button>
-                        <button onclick="appliquerFiltrePopUp('aimees')" class="btn_option_filtre">
-                            <i class="fa-solid fa-heart" style="color: #ef4444;"></i> Publications aimées
-                        </button>
+                </section>
+
+                <section id="page_profil" class="page_interne_reseau" style="display:none;">
+                    <div class="gauche">
+                        <div class="profil_carte">
+                            <div class="photo_profil_conteneur">
+                                <img src="data/utilisateur.png" class="photo_profil globale_avatar" alt="Photo de profil">
+                            </div>
+                            <div class="nom_utilisateur globale_nom">Prenom Nom</div>
+                        </div>
+                        <div class="ligne_foncee"></div>
+                        <div class="menu_lateral_principal">
+                            <button class="btn_menu link_vers_accueil"><i class="fa-solid fa-newspaper"></i> Fil d'actualité</button>
+                            <button class="btn_menu active link_vers_profil"><i class="fa-solid fa-user"></i> Mon Profil</button>
+                            <button class="btn_menu link_vers_abonnements"><i class="fa-solid fa-user-group"></i> Abonnements</button>
+                        </div>
+                        <div class="ligne_foncee"></div>
+
                     </div>
+                    <div class="droite" id="zone_contenu_profil">
+                        <h1>Mon Profil</h1>
+                        <div class="carte_publication" id="dashboard_profil_infos"></div>
+                    </div>
+                </section>
 
-                    <button onclick="fermerPopUpFiltre()" class="btn_annuler_filtre">Annuler</button>
-                </div>
+                <section id="page_abonnements" class="page_interne_reseau" style="display:none;">
+                    <div class="gauche">
+                        <div class="profil_carte">
+                            <div class="photo_profil_conteneur">
+                                <img src="data/utilisateur.png" class="photo_profil globale_avatar" alt="Photo de profil">
+                            </div>
+                            <div class="nom_utilisateur globale_nom">Prenom Nom</div>
+                        </div>
+                        <div class="ligne_foncee"></div>
+                        <div class="menu_lateral_principal">
+                            <button class="btn_menu link_vers_accueil"><i class="fa-solid fa-newspaper"></i> Fil d'actualité</button>
+                            <button class="btn_menu link_vers_profil"><i class="fa-solid fa-user"></i> Mon Profil</button>
+                            <button class="btn_menu active link_vers_abonnements"><i class="fa-solid fa-user-group"></i> Abonnements</button>
+                        </div>
+                        <div class="ligne_foncee"></div>
+                    </div>
+                    <div class="droite">
+                        <h2><i class="fa-solid fa-users"></i> Vos Abonnements</h2>
+                        <p>Retrouvez ici tous les étudiants que vous suivez sur Kampus.</p>
+                        <div class="ligne_claire"></div>
+                        <div id="zone_carte_suivi"></div>
+                    </div>
+                </section>
+
             </div>
-        </div>
-        <!-- Section du profil (cachée par défaut) -->
-        <section id="page_profil" style="display:none;">
-            <div class="baniere">
-                <p>Kampus</p>
-                <div class="menu_lateral_secondaire">
-                    <button id="btn_notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
-                    <button id="btn_deconnexion" title="Se déconnecter"><i class="fa-solid fa-right-from-bracket"></i></button>
-                </div>
-            </div>
-
-            <section id="profil">
-
-            </section>
         </section>
     </body>
 </html>

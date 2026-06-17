@@ -11,6 +11,7 @@ html, body
 {
     height : 100%;
     background : #f9fafb;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 #page_accueil
@@ -19,14 +20,23 @@ html, body
     height : 100vh;
 }
 
-#fils_actualite
+/* CONTENEUR ET ALIGNEMENT IDENTIQUE POUR TOUTES LES PAGES DU RESEAU */
+#conteneur_principal_reseau 
+{
+    width: 100%;
+    height: calc(100vh - 70px);
+    position: relative;
+}
+
+.page_interne_reseau
 {
     display: flex;
-    height: calc(100vh - 70px); /* Prend tout l'écran moins la hauteur de la bannière */
+    height: 100%;
     width: 100%;
 }
 
-.gauche, .droite 
+/* REGLAGE SPECIFIQUE DE LA PAGE D'ACCUEIL (LOGIN/INSCRIPTION) */
+#page_accueil .gauche, #page_accueil .droite 
 {
     flex : 1;
     display : flex;
@@ -34,7 +44,7 @@ html, body
     justify-content : center;
 }
 
-.gauche 
+#page_accueil .gauche 
 {
     background : linear-gradient(135deg, #0f172a, #1e293b);
     color : #f8f9fa;
@@ -42,10 +52,11 @@ html, body
     padding : 50px;
 }
 
-.droite 
+#page_accueil .droite 
 {
     padding : 50px;
 }
+
 /* Styles pour les lignes décoratives */
 .ligne_claire
 {
@@ -67,8 +78,8 @@ html, body
     border-radius : 2px;
     background : #1e40af;
 }
-/* FORMULAIRE */
 
+/* FORMULAIRE ACCUEIL */
 .formulaire_conteneur 
 {
     width : 400px;
@@ -142,6 +153,7 @@ input[type="checkbox"]
 {
     width : auto;
 }
+
 /* Edition de la photo de profil */
 .photo_profil_conteneur
 {
@@ -180,12 +192,13 @@ input[type="checkbox"]
     font-size : 20px;
     cursor : pointer;
     opacity : 0;
-    transition : opacity 0.3s ease; /* Animation de fondu */
+    transition : opacity 0.3s ease;
 }
 .photo_profil_prevu:hover .overlay_edition
 {
-    opacity : 1; /* Affiche l'overlay au survol */
+    opacity : 1;
 }
+
 /* BOUTONS */
 .button_defaut
 {
@@ -198,9 +211,10 @@ input[type="checkbox"]
     font-family : 'Poppins', sans-serif;
     font-size : 16px;
     font-weight : bold;
-    margin-top : 20px;
     width : 100%;
+    margin-top: 20px;
 }
+
 /* Bouton Switch */
 .switch 
 {
@@ -213,7 +227,6 @@ input[type="checkbox"]
     height : 50px;
     z-index : 1;
 }
-
 .switch button
 {
     flex : 1;
@@ -226,13 +239,11 @@ input[type="checkbox"]
     cursor : pointer;
     transition : color 0.3s ease;
 }
-
 .switch button.active
 {
     background : transparent;
     color : white;
 }
-/* Slider pour l'effet visuel du switch */
 .slider 
 {
     position : absolute;
@@ -249,8 +260,8 @@ input[type="checkbox"]
 {
     transform : translateX(100%);
 }
-/* STYLES POUR LA BANIÈRE */
-/*Banière*/
+
+/* BANIÈRE */
 .baniere
 {
     background-color : #0f172a;
@@ -279,8 +290,6 @@ input[type="checkbox"]
     max-width: 400px; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
-
-
 #barre_recherche
 {
     border: none;
@@ -299,13 +308,11 @@ input[type="checkbox"]
     border: none; background: transparent; 
     cursor: pointer;
 }
-/*Effet de survol pour les boutons de la banière*/
 .baniere button:hover
 {
     color: #1e40af;
     background-color: rgba(59, 130, 246, 0.1);
 }
-/* STYLE EN COMMENT ENTRE BARRE LATERALE ET NAVIGATION */
 .baniere button, #menu_lateral_secondaire button
 {
     border: none;
@@ -317,16 +324,13 @@ input[type="checkbox"]
     transition: color 0.2s, background-color 0.2s;
     border-radius: 4px;
 }
-.baniere contenaire_recherche button
-{
-    color: #161616;
-}
 .baniere #btn_notifications, #menu_lateral_secondaire button
 {
     color:#cccccc
 }
-/* STYLES POUR LA BARRE LATERALE GAUCHE (File d'actualité) */
-#fils_actualite .gauche
+
+/* BARRES LATÉRALES INTERNES */
+.page_interne_reseau .gauche
 {
     flex: 0 0 250px; 
     padding: 30px 20px; 
@@ -334,19 +338,19 @@ input[type="checkbox"]
     flex-direction: column;
     align-items: center; 
     justify-content: flex-start; 
+    background : linear-gradient(135deg, #0f172a, #1e293b);
+    color : #f8f9fa;
+    text-align : center;
 }
-
-/* Image de profils gauche*/
-#fils_actualite .gauche .photo_profil
+.page_interne_reseau .gauche .photo_profil
 {
     width: 128px;
     height: 128px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #1e40af;
+    border: 3px solid #1e40af;
 }
-/* Apparence du menu de la barre latérale */
-#menu_lateral_principal
+.menu_lateral_principal
 {
     display : flex;
     flex-direction: column;
@@ -355,429 +359,368 @@ input[type="checkbox"]
     max-width: 180px;
     align-items: center;
 }
-/* Apparence des boutons classique */
-#menu_lateral_principal  .btn_menu
+.menu_lateral_principal .btn_menu 
 {
     width: 100%;
     padding: 10px 15px;
     border: none;
     border-radius: 8px;
-    background: #ffffff1a; 
+    background: rgba(255, 255, 255, 0.1);
     color: #f8f9fa;
     font-size: 14px;
     cursor: pointer;
-    text-align: left; 
+    text-align: left;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease;
 }
-/* STYLE DE LA SECTION DROITE GENERALE */
-#fils_actualite .droite
-{
-    flex: 1;
-    padding : 30px;
-    overflow-y: auto;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    gap : 25px;
-    justify-content: flex-start;
-}
-#fils_actualite .droite, .carte_publication
-{
-    width: 750px;
+.menu_lateral_principal .btn_menu.active, .menu_lateral_principal .btn_menu:hover
+ {
+    background: #3b82f6;
+    color: white;
 }
 
-/* Cartes des fils d'actualité */
-.carte_publication
+/* STYLES DES ENTI-BOUTONS ICONES (MODE SOMBRE) */
+.menu_lateral_secondaire_icones .btn_icon 
+{
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f59e0b;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.2s;
+}
+.menu_lateral_secondaire_icones .btn_icon:hover 
+{
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* SECTION CONTENU DROITE */
+.page_interne_reseau .droite 
+{
+flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 25px;
+    justify-content: flex-start;
+    background: #f9fafb;
+    width: 100%;
+}
+.carte_publication 
 {
     background: #ffffff;
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid #e2e8f0;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto;
+    width: 100%;
+    max-width: 750px;
 }
-/* FORMULAIRE DE CREATION DE PUBLICATION */
-.publication_fromulaire
+
+/* CRÉATION DE PUBLICATION */
+#form_nouvelle_publication 
 {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 15px;
+    width: 100%;
 }
-/* Style pour la zone de saisie */
-#publication_texte
+#publication_texte 
 {
     width: 100%;
     height: 90px;
     padding: 12px;
     border : 1px solid #cdcdcd;
+    border-radius: 8px;
     resize: none;
     font-size: 14px;
     outline: none;
     background-color: #f8f9fa;
     transition: border-color 0.2s;
 }
-#publication_texte:focus
+#publication_texte:focus 
 {
     border-color: #3b82f6;
     background-color: white;
 }
 
-/* AFFICHAGE D'UNE PUBLICATION */
-/* Sytle de l'entête de la publication */
-.entete_publication
+/* EN-TÊTE ET ACTIONS DES PUBLICATIONS */
+.entete_publication 
 {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 15px
+    margin-bottom: 15px 
 }
-.publication_photo_profil
+.publication_photo_profil 
 {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #3b82f6
+    border: 1px solid #3b82f6 
 }
-.publication_auteur
+.publication_auteur 
 {
     font-weight: 600;
     color: #1e293b;
     font-size: 15px;
-    font-style: bold;
 }
-.publication_date
+.publication_date 
 {
     font-size: 12px;
     color: #6b7280;
-    margin-left : auto;
-    font-style: italic
+    font-style: italic 
 }
-/* Style de la publication */
-.publication_contenu
+.publication_contenu 
 {
     font-size: 14px;
     color: #334155;
     line-height: 1.6;
     margin-bottom: 20px;
-    text-align: justify
 }
-/* Zone des boutons */
-.publication_actions
+.publication_actions 
 {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #f1f5f9;
-    padding-top: 15px
+    padding-top: 15px 
 }
-.publication_actions button
+.publication_actions button 
 {
-    flex: 1;
-    background: transparent;
+    background: none;
     border: none;
-    padding: 10px;
-    color: #6b7280;
-    font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
-    border-radius: 8px;
+    font-size: 14px;
     display: flex;
-    align-items:center;
-    justify-content: center;
+    align-items: center;
     gap: 8px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: color 0.2s 
 }
-.publication_actions button:hover
+.publication_actions button:hover 
 {
-    background: #f1f5f9;
-    color: #3b82f6;
+    color: #3b82f6 
 }
-/* Style du bouton de suppression */
+#apercu_image_publication, .publication_image_zone img 
+{
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    object-fit: cover; 
+    display: block;
+}
+#conteneur_pub
+{
+    display: flex; 
+    gap: 10px; 
+}
+
+/* Style pour le bouton de suppression */
 #btn_suppr
 {
-    color: #ef4444; 
-    margin-left: auto; 
-    background: transparent; 
-    border: none; 
-    cursor: pointer
-}
-/* Style de l'arperçu de l'image */
-#conteneur_apercu_image
-{
-    display: none; 
-    position: relative; 
-    margin-top: 10px; 
-    max-width: 100%
-}
-#apercu_image_publication
-{
-    max-height: 200px; 
-    border-radius: 8px; 
-    object-fit: cover;
-}
-.publication_auteur_email 
-{
-    font-size: 11px;
-    color: #94a3b8;
-    font-weight: normal;
+    margin-left: auto;
+    background-color: #fee2e2; 
+    color: #ef4444;            
+    border: 1px solid #fecaca; 
+    padding: 8px 12px;        
+    border-radius: 6px;        
+    cursor: pointer;
+    transition: all 0.2s ease; 
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.publication_image_zone 
+/* Effet au survol du bouton */
+#btn_suppr:hover 
 {
-    margin-top: 12px;
+    background-color: #ef4444; 
+    color: white;             
+    border-color: #dc2626;
+}
+/* ZONE APERÇU IMAGE DE PUBLICATION */
+#conteneur_apercu_image 
+{
     width: 100%;
-    max-height: 400px;
+    max-height: 100%;
     overflow: hidden;
     border-radius: 8px;
+    position: relative;
+    border: 1px dashed #cbd5e1;
 }
-
-.publication_image_zone img 
+#apercu_image_publication 
 {
     width: 100%;
     height: auto;
-    max-height: 400px;
     object-fit: cover;
 }
-
-.publication_like_actif 
+.btn_supprimer_image_prev 
 {
-    color: #3b82f6;
-    font-weight: bold;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.btn_supprimer_image_prev:hover 
+{
+    background: #dc2626;
 }
 
-/* Zone Commentaires */
-.zone_commentaires_bloc 
+/* ZONE DE SÉLECTION D'IMAGE ET FILTRES DANS LA CARTE DE SAISIE */
+.zone_publication_boutons 
 {
-    display: none;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
+    margin-top: 5px;
 }
-
-.liste_commentaires_boite 
+.groupe_boutons_gauche 
 {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 10px;
 }
-
-.commentaire_unitaire 
+.btn_action_pub, .btn_declenche_filtre 
 {
-    background: #f3f4f6;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    text-align: left;
-}
-
-.zone_saisie_commentaire 
-{
-    display: flex;
-    gap: 8px;
-}
-
-.input_nouveau_commentaire 
-{
-    flex: 1;
-    padding: 6px 12px;
-    border: 1px solid #cbd5e1;
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 8px 16px;
     border-radius: 6px;
-    font-size: 13px;
-    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
 }
-
-.btn_envoyer_commentaire 
+.btn_action_pub:hover, .btn_declenche_filtre:hover
+{
+    background: #e2e8f0;
+    color: #1e293b;
+}
+#btn_publier_post 
 {
     background: #3b82f6;
     color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
+    padding: 8px 20px;
+    font-weight: 600;
+}
+#btn_publier_post:hover 
+{
+    background: #2563eb;
+    color: white;
 }
 
-/* Message aucun résultat */
-.publication_recherche_vide 
+/* POP-UPS GÉNÉRIQUES (CONNEXION/FILTRES) */
+.pop_up {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.pop_up.active 
 {
+    opacity: 1;
+    pointer-events: auto;
+}
+.pop_up_contenu 
+{
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 450px;
     text-align: center;
-    color: #6b7280;
-    padding: 40px 20px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
 }
-
-.publication_recherche_vide i 
+.pop_up.active .pop_up_contenu 
 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #cbd5e1;
-}
-
-.publication_recherche_vide p 
-{
-    font-weight: 500;
-}
-
-/* STYLES POUR LA POP-UP */
-.pop_up
-{
-    display : none;
-    position : fixed;
-    z-index : 1000;
-    left : 0;
-    top : 0;
-    width : 100%;
-    height : 100%;
-    background : rgba(0, 0, 0, 0.5);
-    backdrop-filter : blur(8px);
-    justify-content : center;
-    align-items : center;
-}
-.pop_up_contenu
-{
-    background-color : white;
-    padding : 30px;
-    border-radius : 15px;
-    width : 90%;
-    max-width : 400px;
-    box-shadow : 0 10px 25px rgba(0,0,0,0.2);
-    position : relative;
-    animation : apparition 0.3s ease-out;
+    transform: translateY(0);
 }
 .pop_up_contenu h2
 {
-    text-align: center;
-    margin-bottom : 5px;
+    font-size: 1.4rem;
+    color: #1e293b;
+    margin-bottom: 10px;
 }
-.pop_up_contenu li
-{
-    margin-left: 20px;
-}
-.pop_up.active
-{
-    display : flex;
-}
-.pop_up.fond_disparition
-{
-    animation : fond_disparition 0.3s ease-out forwards;
-}
-.pop_up_contenu.en_fermeture
-{
-    animation : disparition 0.3s ease-out forwards;
-}
-/* Animations ouverture POP-UP */
-@keyframes apparition 
-{
-    from 
-    {
-        opacity : 0;
-        transform: scale(0.8);
-    }
-    to 
-    {
-        opacity : 1;
-        transform: scale(1);
-    }
-}
-/* Animations fermture POP-UP */
-@keyframes fond_disparition 
-{
-    from 
-    {
-        background : rgba(0, 0, 0, 0.5); 
-        backdrop-filter : blur(8px); 
-    }       
-    to 
-    {
-        background : rgba(0, 0, 0, 0); 
-        backdrop-filter : blur(0px);    
-    }
-}
-@keyframes disparition 
-{
-    from 
-    {
-        opacity : 1;
-        transform: scale(1);
-    }
-    to 
-    {
-        opacity : 0;
-        transform: scale(0.8);
-    }
-}
-/* POP UP DE FILTRE */
-
-/* Options de filtres dans la pop-up */
-.liste_options_filtre 
+.options_filtre 
 {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    margin: 20px 0;
 }
-
-.btn_option_filtre 
+.btn_filtre_action 
 {
     width: 100%;
     padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 500;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.btn_option_filtre:hover 
-{
+    border: 1px solid #e2e8f0;
     background: #f8fafc;
-    border-color: #94a3b8;
-    transform: translateY(-1px);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    font-weight: 500;
+    color: #475569;
+    transition: all 0.2s;
 }
-
-.btn_option_filtre i 
+.btn_filtre_action:hover, .btn_filtre_action.active 
 {
-    font-size: 1.1rem;
+    background: #e0f2fe;
+    border-color: #0284c7;
+    color: #0369a1;
 }
-
 .btn_annuler_filtre 
 {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background: #64748b;
+    background: #ef4444;
     color: white;
+    border: none;
+    padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    transition: background 0.2s ease;
+    width: 100%;
+    margin-top: 10px;
 }
 
-.btn_annuler_filtre:hover 
-{
-    background: #475569;
-}
-
-/* Éléments dynamiques des cartes publications */
-.publication_auteur_email 
-{
-    font-size: 11px;
-    color: #94a3b8;
-    font-weight: normal;
-}
-
+/* AFFICHAGE DES IMAGES COMPLÈTES PUBLIÉES */
 .publication_image_zone 
 {
     margin-top: 12px;
@@ -786,7 +729,6 @@ input[type="checkbox"]
     overflow: hidden;
     border-radius: 8px;
 }
-
 .publication_image_zone img 
 {
     width: 100%;
@@ -794,15 +736,13 @@ input[type="checkbox"]
     max-height: 400px;
     object-fit: cover;
 }
-
-
 .publication_like_actif 
 {
     color: #3b82f6;
     font-weight: bold;
 }
 
-/* Zone des Commentaires */
+/* ZONE DES COMMENTAIRES */
 .zone_commentaires_bloc 
 {
     display: none;
@@ -811,15 +751,13 @@ input[type="checkbox"]
     border-top: 1px solid #e2e8f0;
     width: 100%;
 }
-
-.liste_commentaires_boite 
+.liste_commentaires_boite
 {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-bottom: 12px;
 }
-
 .commentaire_unitaire 
 {
     background: #f3f4f6;
@@ -828,50 +766,330 @@ input[type="checkbox"]
     font-size: 13px;
     text-align: left;
 }
-
 .zone_saisie_commentaire 
 {
     display: flex;
     gap: 8px;
 }
-
-.input_nouveau_commentaire 
+.input_nouveau_commentaire
 {
     flex: 1;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     font-size: 13px;
     outline: none;
 }
-
+.input_nouveau_commentaire:focus 
+{
+    border-color: #3b82f6;
+}
 .btn_envoyer_commentaire 
 {
     background: #3b82f6;
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 0 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#zone_publications, #zone_carte_suivi 
+{
+    width: 100%;
+    max-width: 750px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* PAGE ABONNEMENTS : GRILLE DES CARTES DE SUIVI */
+.grille_abo
+ {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-top: 10px;
+}
+.carte_suivi 
+{
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.carte_suivi:hover 
+{
+    transform: translateY(-20px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+.btn_follow
+{
+    background-color: #e0e7ff; 
+    color: #4f46e5;           
+    border: 1px solid #c7d2fe;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto; 
+}
+.page_interne_reseau .btn_unfollow
+{
+    margin-left: auto;
+}
+.carte_suivi .btn_unfollow
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+}
+/* Effet au survol */
+.btn_follow:hover {
+    background-color: #4f46e5; /* Bleu soutenu */
+    color: white;
+    border-color: #4338ca;
+}
+.btn_unfollow 
+{
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+    transition: background 0.2s;
+}
+.btn_unfollow:hover 
+{
+    background: #fca5a5;
 }
 
-/* Message d'absence de résultat */
-.publication_recherche_vide 
+/* SECTION DU PROFIL PAR DÉFAUT */
+
+#profil 
 {
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto; 
+}
+/* Conteneur principal des cartes profil */
+
+.carte_profil_conteneur 
+{
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    max-width: 750px;
+}
+/* Titres des sections profil */
+.titre__profil_conteneur 
+{
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.icone-bleue
+{ 
+    color: #3b82f6; 
+}
+.icone-verte 
+{ 
+    color: #10b981; 
+}
+/* Bloc infos utilisateur */
+.infos_utilisateur 
+{
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.pdp-grand-format 
+{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #3b82f6;
+    flex-shrink: 0;
+}
+
+.texte-details-utilisateur p 
+{
+    margin-bottom: 8px;
+    color: #475569;
+}
+/* Grille des statistiques */
+.grille_stat_dashboard 
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.statistique 
+{
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
-    color: #6b7280;
-    padding: 40px 20px;
+    border-top: 4px solid;
+}
+/* Couleurs des barres de statistiques */
+.barre_vert 
+{
+    border-color: #10b981; 
+    background: #ecfdf5; 
+}
+.barre_bleu 
+{ 
+    border-color: #3b82f6; 
+    background: #eff6ff; 
+}
+.barre_orange 
+{ 
+    border-color: #f59e0b; 
+    background: #fffbeb; 
 }
 
-.publication_recherche_vide i 
-{
-    font-size: 2.5rem;
-    margin-bottom: 12px;
-    color: #cbd5e1;
+.valeur_statistique 
+{ 
+    font-size: 1.8rem; 
+    font-weight: 700; 
+}
+.texte_vert 
+{ 
+    color: #059669; 
+}
+.texte_bleu 
+{ 
+    color: #2563eb; 
+
+}
+.texte_orange 
+{ 
+    color: #d97706; 
 }
 
-.publication_recherche_vide p 
+.label_statistique 
+{ 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    color: #475569; 
+}
+
+/* RESPONSIVE DESIGN ARRANGE POUR LES MODES SUR MOBILE */
+@media (max-width: 768px) 
 {
-    font-weight: 500;
+    #page_accueil 
+    {
+        flex-direction: column;
+    }
+    #page_accueil .gauche 
+    {
+        padding: 30px;
+    }
+    #page_accueil .droite 
+    {
+        padding: 20px;
+    }
+    .formulaire_conteneur 
+    {
+        width: 100%;
+        max-width: 360px;
+    }
+    .page_interne_reseau 
+    {
+        flex-direction: column;
+    }
+    .page_interne_reseau .gauche 
+    {
+        width: 100%;
+        flex: none;
+        padding: 20px;
+    }
+    .page_interne_reseau .droite 
+    {
+        width: 100%;
+        padding: 15px;
+    }
+    .carte_publication, .grille_abo 
+    {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) 
+{
+    .page_interne_reseau .gauche 
+    {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px 10px;
+    }
+    .menu_lateral_principal 
+    {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .menu_lateral_principal .btn_menu 
+    {
+        flex: 1;
+        padding: 10px 5px;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 10px;
+        text-align: center;
+    }
+    .menu_lateral_principal .btn_menu i
+    {
+        font-size: 14px;
+    }
+    .carte_publication
+    {
+        padding: 15px;
+        border-radius: 12px;
+    }
+    .publication_photo_profil
+    {
+        width: 45px;
+        height: 45px;
+    }
+    .publication_auteur 
+    {
+        font-size: 13px;
+    }
+    .entete_publication 
+    {
+        gap: 10px;
+        flex-wrap: wrap; 
+    }
 }
